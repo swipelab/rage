@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hush.Api", "Hush.Api\Hush.Api.csproj", "{DA6C0ED8-5020-43DD-90C7-8632E7D57FC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hush.SQL", "Hush.SQL\Hush.SQL.csproj", "{CAA7F1BF-924D-4673-AD42-751FD4D2E693}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Etc", "Etc", "{FE8BF800-A9E5-4DFF-A721-CAF0E703C0EA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA6C0ED8-5020-43DD-90C7-8632E7D57FC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA6C0ED8-5020-43DD-90C7-8632E7D57FC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA6C0ED8-5020-43DD-90C7-8632E7D57FC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA6C0ED8-5020-43DD-90C7-8632E7D57FC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAA7F1BF-924D-4673-AD42-751FD4D2E693}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA7F1BF-924D-4673-AD42-751FD4D2E693}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAA7F1BF-924D-4673-AD42-751FD4D2E693}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAA7F1BF-924D-4673-AD42-751FD4D2E693}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

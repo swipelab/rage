@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ghost-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: ghost
+  template:
+    metadata:
+      labels:
+        component: ghost
+    spec:
+      containers:
+        - name: ghost
+          image: agrapine/ghost
+          ports:
+            - containerPort: 80
+            - containerPort: 443

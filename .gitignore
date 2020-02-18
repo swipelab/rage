@@ -1,0 +1,16 @@
+.idea
+.vs
+
+bin
+obj
+
+
+data-postgres
+/gosh/debug
+/rant/ios/Runner/GoogleService-Info.plist
+/rant/.flutter-plugins-dependencies
+*.DS_Store
+/rage
+__debug_bin
+/rant/android/app/google-services.json
+/data-mysql
