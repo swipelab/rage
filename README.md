@@ -1,8 +1,9 @@
 
+```
 ---------- rage -----------
 - rant  <-------->  ghost -
 ---------------------------
-
+```
 
 ### Execute
 ```zsh
@@ -18,6 +19,5 @@ docker run -it -v $(pwd):/app ruby:2.3 sh
 get install travis
 travis login --pro
 travis encrypt-file secret.json -r {github_username}/{github_repo} --pro
-# follow the instructions printed :D
-
+# follow the instructions
 ```

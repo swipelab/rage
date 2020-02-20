@@ -10,6 +10,12 @@ ghost-cluster > ghost-deployment > docker.io/swipelab/rage-ghost
 ### Creating a secret
 kubectl create secret generic <secret_name> --from-literal SECRET_KEY=SECRET_VALUE
 
+### CLI
+
+```sh
+gcloud container clusters get-credentials rage-cluster --zone europe-west2-a --project co-swipelab-rage
+```
+
 ### Helm
 ```sh
 
@@ -17,17 +23,17 @@ kubectl create secret generic <secret_name> --from-literal SECRET_KEY=SECRET_VAL
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
 chmod 700 get_helm.sh
 ./get_helm.sh
+```
+
+### NGINX
+```sh
+kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)
 
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 helm install my-nginx stable/nginx-ingress --set rbac.create=true
-
-# outdated
-# #tiller - Role Based Access Controll (RBAC)
-# kubectl create serviceaccount --namespace kube-system tiller
-# kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
-# #init
-# helm init --service-account tiller --upgrade
 ```
+
+
 
 
 Types of Users
