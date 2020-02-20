@@ -34,10 +34,8 @@ helm install my-nginx stable/nginx-ingress --set rbac.create=true
 ```
 
 
-
-
 Types of Users
-User Accounts - Identifies a *person* administering our cluster
-Service Accounts - Identifies a *pod* administering a cluster
-Cluster Role Binding - Authorizes an account to do a certain set of action across the entire cluster
-Role Binding - Authorizes an account to do a certain set of acctions in a *single namespace*
+  - User Accounts - Identifies a *person* administering our cluster
+  - Service Accounts - Identifies a *pod* administering a cluster
+  - Cluster Role Binding - Authorizes an account to do a certain set of action across the entire cluster
+  - Role Binding - Authorizes an account to do a certain set of acctions in a *single namespace*
