@@ -36,13 +36,18 @@ helm install my-nginx stable/nginx-ingress --set rbac.create=true
 ### HTTPS
 github.com/jetstack/cert-manager
 ```sh
+kubectl apply --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.13/deploy/manifests/00-crds.yaml
 kubectl create namespace cert-manager
-kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.13.1/cert-manager.yaml
-kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
-
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
-helm install cert-manager --namespace cert-manager --version v0.13.1 jetstack/cert-manager
+helm install cert-manager --namespace cert-manager --version v0.13.0 jetstack/cert-manager
+
+# kubectl create namespace cert-manager
+# kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v0.13.1/cert-manager.yaml
+# kubectl create clusterrolebinding cluster-admin-binding --clusterrole=cluster-admin --user=$(gcloud config get-value core/account)
+# helm repo add jetstack https://charts.jetstack.io
+# helm repo update
+# helm install cert-manager --namespace cert-manager --version v0.13.1 jetstack/cert-manager
 ```
 
 
