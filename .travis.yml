@@ -4,28 +4,29 @@ services:
 cache:
   directories:
     - "$HOME/google-cloud-sdk/"
-# env:
-#   global:
-#   # Do not prompt for user input when using any SDK methods.
-#   - CLOUDSDK_CORE_DISABLE_PROMPTS=1 
 before_install:
+  #install gcloud
   - gcloud version || true
-  - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi  
-  # - curl https://sdk.cloud.google.com | bash > /dev/null;
+  - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash > /dev/null; fi  
   - source $HOME/google-cloud-sdk/path.bash.inc
   - gcloud version
-  
-
+  #update kubectl  
   - gcloud components update kubectl
-  - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in co-swipelab-rage-travis.json.enc -out co-swipelab-rage-travis.json -d
+
+  #load service account secret
+  - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in co-swipelab-rage-travis.json.enc -out co-swipelab-rage-travis.json -d  
   - gcloud auth activate-service-account --key-file co-swipelab-rage-travis.json
+
+  #setup project
   - gcloud config set project co-swipelab-rage
   - gcloud config set compute/zone europe-west2-a 
   - gcloud container clusters get-credentials rage-ghost-cluster
+
+  #docker login
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker build -t swipelab/rage-ghost-test -f ./ghost/Dockerfile.dev ./ghost
+  - docker build -t swipelab/rage-ghost-test -f ./ghost/Dockerfile.dev .
 script:
-  - docker run swipelab/rage-ghost-test dotnet test
+  - docker run swipelab/rage-ghost-test dotnet test ghost.test.dll
 deploy:
   provider: script
   script: bash ./deploy.sh
