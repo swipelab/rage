@@ -10,4 +10,7 @@ before_install:
   - gcloud config set project co-swipelab-rage
   - gcloud config set compute/zone europe-west2-a 
   - gcloud container clusters get-credentials rage-ghost-cluster
-  
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t swipelab/rage-ghost:latest -f ./ghost/Dockerfile ./ghost
+deploy:
+  - docker push swipelab/rage-ghost
