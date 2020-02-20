@@ -33,6 +33,9 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 helm install my-nginx stable/nginx-ingress --set rbac.create=true
 ```
 
+### HTTPS
+
+github.com/jetstack/cert-manager
 
 Types of Users
   - User Accounts - Identifies a *person* administering our cluster
