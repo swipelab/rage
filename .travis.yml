@@ -1,9 +1,21 @@
 sudo: required
 services:
   - docker
+cache:
+  directories:
+    - "$HOME/google-cloud-sdk/"
+# env:
+#   global:
+#   # Do not prompt for user input when using any SDK methods.
+#   - CLOUDSDK_CORE_DISABLE_PROMPTS=1 
 before_install:
-  - curl https://sdk.cloud.google.com | bash > /dev/null;
+  - gcloud version || true
+  - if [ ! -d "$HOME/google-cloud-sdk/bin" ]; then rm -rf $HOME/google-cloud-sdk; export CLOUDSDK_CORE_DISABLE_PROMPTS=1; curl https://sdk.cloud.google.com | bash; fi  
+  # - curl https://sdk.cloud.google.com | bash > /dev/null;
   - source $HOME/google-cloud-sdk/path.bash.inc
+  - gcloud version
+  
+
   - gcloud components update kubectl
   - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in co-swipelab-rage-travis.json.enc -out co-swipelab-rage-travis.json -d
   - gcloud auth activate-service-account --key-file co-swipelab-rage-travis.json
