@@ -23,7 +23,7 @@ before_install:
   #setup project
   - gcloud config set project co-swipelab-rage
   - gcloud config set compute/zone europe-west2-a 
-  - gcloud container clusters get-credentials rage-ghost-cluster
+  - gcloud container clusters get-credentials rage-cluster
 
   #docker login
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
