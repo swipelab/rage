@@ -4,14 +4,15 @@ https://kubernetes.github.io/ingress-nginx/deploy/
 
 ### rage-cluster
 
-
-* Create cluster GCP  @ https://console.cloud.google.com/
-  - Standard Cluster
-  - name : ``rage-cluster``
-  - Zonal : ``europe-west2-a`` (London)
-  - Release channel : ``stable``
-  - Nodes : ``1``
-  - Instance Type : ``n1-highcpu-2`` (NGINX Controller Minimum Specs :( )
+Create cluster GCP  @ https://console.cloud.google.com/
+Steps: 
+  * Create Cluster
+  * Select ``Standard Cluster``
+  * name : ``rage-cluster``
+  * Zonal : ``europe-west2-a`` (London)
+  * Release channel : ``stable``
+  * Nodes : ``1``
+  * Instance Type : ``n1-highcpu-2`` (NGINX Controller Minimum Specs :( )
 
 
 
