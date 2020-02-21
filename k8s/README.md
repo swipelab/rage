@@ -4,6 +4,16 @@ https://kubernetes.github.io/ingress-nginx/deploy/
 
 ### rage-cluster
 
+Create cluster GCP
+* Open console.cloud.google.com
+  - Standard Cluster
+  - name : rage-cluster
+  - Zonal : europe-west2-a (London)
+  - Release channel : stable
+  - Nodes : 1
+  - Instance Type : n1-highcpu-2 (NGINX Controller Minimum Specs :( )
+  
+
 ingress-service > ghost-cluster
 ghost-cluster > ghost-deployment > docker.io/swipelab/rage-ghost
 
