@@ -4,16 +4,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ghost.Pipe
 {
-  public static class PipeExtension
+  public static class RocketExtension
   {
     public static IApplicationBuilder MapHub<T>(this IApplicationBuilder app, PathString path)
-      where T : PipeHub
+      where T : RocketHub
       => app.Map(path, ap => ap.UseMiddleware<RocketMiddleware>(ap.ApplicationServices.GetRequiredService<T>()));
 
     public static IServiceCollection AddHub(this IServiceCollection services)
     {
-      services.AddTransient<PipeMap>();
-
+      services.AddTransient<RocketMap>();
       return services;
     }
   }

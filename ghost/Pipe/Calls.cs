@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using ghost.WebRTC;
 
 namespace ghost.Pipe
 {
-  public interface IMx
-  {
-  }
-
   public static class Extension
   {
     public static void Pipe<T>(this EventHandler<PipeMessage<T>> handler, string pid, string json)
@@ -23,7 +20,7 @@ namespace ghost.Pipe
     }
   }
 
-  public class Signal
+  public class Calls
   {
     public const string New = "new";
     public const string Bye = "bye";
@@ -32,13 +29,12 @@ namespace ghost.Pipe
     public const string Candidate = "candidate";
     public const string KeepAlive = "keepalive";
 
-    public event EventHandler<PipeMessage<MxNew>> OnNew;
-    public event EventHandler<PipeMessage<MxBye>> OnBye;
-    public event EventHandler<PipeMessage<MxOffer>> OnOffer;
-    public event EventHandler<PipeMessage<MxAnswer>> OnAnswer;
-    public event EventHandler<PipeMessage<MxCandidate>> OnCandidate;
-    public event EventHandler<PipeMessage<MxKeepAlive>> OnKeepAlive;
-
+    public event EventHandler<PipeMessage<CallMessageNew>> OnNew;
+    public event EventHandler<PipeMessage<CallMessageBye>> OnBye;
+    public event EventHandler<PipeMessage<CallMessageOffer>> OnOffer;
+    public event EventHandler<PipeMessage<CallMessageAnswer>> OnAnswer;
+    public event EventHandler<PipeMessage<CallMessageCandidate>> OnCandidate;
+    public event EventHandler<PipeMessage<CallMessageKeepAlive>> OnKeepAlive;
 
     public Task Pipe(string pid, string json)
     {
@@ -70,12 +66,24 @@ namespace ghost.Pipe
       return Task.CompletedTask;
     }
 
-    public static string Peers(IEnumerable<MxPeer> peers)
+    public static string Peers(IEnumerable<CallMessagePeer> peers)
     {
       return JsonSerializer.Serialize(new
       {
         type = "peers",
         data = peers.ToList()
+      });
+    }
+
+    public static string Error(string error)
+    {
+      return JsonSerializer.Serialize(new
+      {
+        type = "error",
+        data = new
+        {
+          error = error
+        }
       });
     }
   }
@@ -85,7 +93,12 @@ namespace ghost.Pipe
     [JsonPropertyName("type")] public string Type { get; set; }
   }
 
-  public class MxPeer : IMx
+  public class MxSession
+  {
+    public string Id { get; set; }
+  }
+
+  public class CallMessagePeer : ICallMessage
   {
     [JsonPropertyName("id")] public string Id { get; set; }
     [JsonPropertyName("name")] public string Name { get; set; }
@@ -99,59 +112,41 @@ namespace ghost.Pipe
     public TMessage Data { get; set; }
   }
 
-  public class MxNew : IMx
+  public class CallMessageNew : ICallMessage
   {
     [JsonPropertyName("name")] public string Name { get; set; }
     [JsonPropertyName("user_agent")] public string UserAgent { get; set; }
     [JsonPropertyName("id")] public string Id { get; set; }
   }
 
-  public class MxBye : IMx
+  public class CallMessageBye : ICallMessage
   {
     [JsonPropertyName("session_id")] public string SessionId { get; set; }
   }
 
-  public class MxOffer : IMx
+  public class CallMessageOffer : ICallMessage
   {
     [JsonPropertyName("to")] public string To { get; set; }
-    [JsonPropertyName("description")] public RtcSessionDescription Description { get; set; }
+    [JsonPropertyName("description")] public SessionDescription Description { get; set; }
     [JsonPropertyName("session_id")] public string SessionId { get; set; }
     [JsonPropertyName("media")] public string Media { get; set; }
   }
 
-  public class MxAnswer : IMx
+  public class CallMessageAnswer : ICallMessage
   {
     [JsonPropertyName("to")] public string To { get; set; }
-    [JsonPropertyName("description")] public RtcSessionDescription Description { get; set; }
+    [JsonPropertyName("description")] public SessionDescription Description { get; set; }
     [JsonPropertyName("session_id")] public string SessionId { get; set; }
   }
 
-  public class MxCandidate : IMx
+  public class CallMessageCandidate : ICallMessage
   {
     [JsonPropertyName("to")] public string To { get; set; }
     [JsonPropertyName("session_id")] public string SessionId { get; set; }
-    [JsonPropertyName("candidate")] public RtcIceCandidate Candidate { get; set; }
+    [JsonPropertyName("candidate")] public IceCandidate Candidate { get; set; }
   }
 
-  public class RtcSessionDescription
-  {
-    [JsonPropertyName("sdp")] public string Sdp { get; set; }
-
-    /// <summary>
-    /// Can be - Answer | Offer
-    /// </summary>
-    [JsonPropertyName("type")]
-    public string Type { get; set; }
-  }
-
-  public class RtcIceCandidate
-  {
-    [JsonPropertyName("sdpMLineIndex")] public int SdpMLineIndex { get; set; }
-    [JsonPropertyName("spdMid")] public string SdpMid { get; set; }
-    [JsonPropertyName("candidate")] public string Candidate { get; set; }
-  }
-
-  public class MxKeepAlive : IMx
+  public class CallMessageKeepAlive : ICallMessage
   {
   }
 }

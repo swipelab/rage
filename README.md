@@ -13,7 +13,6 @@ docker-compose up -d
 
 ### Travis Encrypt File
 ```sh
-
 # copy the file to be encrypted into the current directory (eg: secret.json)
 docker run -it -v $(pwd):/app ruby:2.3 sh
 gem install travis

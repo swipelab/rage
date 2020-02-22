@@ -7,24 +7,24 @@ using System.Threading.Tasks;
 
 namespace ghost.Pipe
 {
-  public abstract class PipeHub
+  public abstract class RocketHub
   {
-    protected PipeMap PipeMap { get; }
+    protected RocketMap RocketMap { get; }
 
-    protected PipeHub(PipeMap pipeMap)
+    protected RocketHub(RocketMap rocketMap)
     {
-      PipeMap = pipeMap;
+      RocketMap = rocketMap;
     }
 
     public virtual Task OnConnected(WebSocket ws)
     {
-      PipeMap.Add(ws);
+      RocketMap.Add(ws);
       return Task.CompletedTask;
     }
 
     public virtual async Task OnDisconnected(WebSocket ws)
     {
-      await PipeMap.Remove(PipeMap.Pid(ws));
+      await RocketMap.Remove(RocketMap.Pid(ws));
     }
 
     public async Task Send(WebSocket ws, string message)
@@ -43,9 +43,9 @@ namespace ghost.Pipe
         cancellationToken: CancellationToken.None);
     }
 
-    public Task Send(string pid, string msg) => Send(PipeMap.Socket(pid), msg);
+    public Task Send(string pid, string msg) => Send(RocketMap.Socket(pid), msg);
 
-    public Task Broadcast(string msg) => Task.WhenAll(PipeMap.Index.Values.Select(ws => Send(ws, msg)));
+    public Task Broadcast(string msg) => Task.WhenAll(RocketMap.Index.Values.Select(ws => Send(ws, msg)));
 
     public abstract Task Receive(WebSocket ws, WebSocketReceiveResult result, byte[] buffer);
   }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ghost.Pipe
 {
-  public class PipeMap
+  public class RocketMap
   {
     private ConcurrentDictionary<string, WebSocket> _index = new ConcurrentDictionary<string, WebSocket>();
 
@@ -16,7 +16,7 @@ namespace ghost.Pipe
 
     public string Pid(WebSocket ws) => _index.FirstOrDefault(x => x.Value == ws).Key;
 
-    public void Add(WebSocket ws) => _index.TryAdd(NewSid(), ws);
+    public void Add(WebSocket ws) => _index.TryAdd(NewPid(), ws);
 
     public async Task Remove(string pid)
     {
@@ -31,6 +31,6 @@ namespace ghost.Pipe
         cancellationToken: CancellationToken.None);
     }
 
-    private string NewSid() => Guid.NewGuid().ToString();
+    private string NewPid() => Guid.NewGuid().ToString();
   }
 }

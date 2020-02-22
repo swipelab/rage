@@ -9,9 +9,9 @@ namespace ghost.Pipe
   public class RocketMiddleware
   {
     private readonly RequestDelegate _next;
-    private PipeHub _hub;
+    private RocketHub _hub;
 
-    public RocketMiddleware(RequestDelegate next, PipeHub hub)
+    public RocketMiddleware(RequestDelegate next, RocketHub hub)
     {
       _next = next;
       _hub = hub;

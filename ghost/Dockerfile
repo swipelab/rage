@@ -12,4 +12,3 @@ COPY --from=build /release .
 
 ENTRYPOINT ["dotnet", "ghost.dll"]
 EXPOSE 80
-

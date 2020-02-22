@@ -15,7 +15,7 @@ namespace ghost
       services.AddLogging(x => x.AddConsole());
 
       services.AddHub();
-      services.AddSingleton<RoomHub>();
+      services.AddSingleton<CallHub>();
     }
 
 
@@ -28,7 +28,7 @@ namespace ghost
 
       app.UseWebSockets();
       
-      app.MapHub<RoomHub>("/lobby");
+      app.MapHub<CallHub>("/lobby");
 
       app.UseRouting();
       app.UseEndpoints(endpoints =>
