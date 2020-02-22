@@ -1,9 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_webrtc/webrtc.dart';
-import 'package:rant/experimental/device_info.dart';
-import 'package:rant/experimental/rocket.dart';
-import 'random_string.dart';
+import 'package:rant/util/util.dart';
 
 enum SignalState {
   CallStateNew,
@@ -23,12 +21,12 @@ typedef void DataChannelMessageFn(
     RTCDataChannel channel, RTCDataChannelMessage message);
 typedef void DataChannelFn(RTCDataChannel channel);
 
-class Signal {
-  String _selfId = randomNumeric(6);
+class Call {
+  var _url;
+
+  String _selfId = Generator.randomNumeric(6);
   Rocket _socket;
   var _sessionId;
-  var _host;
-  int _port;
   var _peerConnections = new Map<String, RTCPeerConnection>();
   var _dataChannels = new Map<String, RTCDataChannel>();
   var _remoteCandidates = [];
@@ -65,7 +63,7 @@ class Signal {
     'optional': []
   };
 
-  Signal(this._host, {int port = 31515}) : this._port = port;
+  Call(this._url);
 
   close() {
     if (_localStream != null) {
@@ -185,7 +183,6 @@ class Signal {
         break;
       case 'bye':
         {
-          var from = data['from'];
           var to = data['to'];
           var sessionId = data['session_id'];
           print('bye: $sessionId');
@@ -216,9 +213,7 @@ class Signal {
   }
 
   void connect() async {
-    var url = 'ws://$_host:$_port/lobby';
-    _socket = Rocket(url);
-
+    _socket = Rocket(_url);
 
     _socket.onOpen = () {
       print('onOpen');
@@ -231,12 +226,11 @@ class Signal {
     };
 
     _socket.onMessage = (message) {
-      print('Received data: $message');
       this.onMessage(json.decode(message));
     };
 
     _socket.onClose = (int code, String reason) {
-      print('Closed by server [$code => $reason]!');
+      //print('Closed by Ghost [$code => $reason]!');
       this.onStateChange?.call(SignalState.ConnectionClosed);
     };
 

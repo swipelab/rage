@@ -9,7 +9,7 @@ class CallSample extends StatefulWidget {
 }
 
 class _CallSampleState extends State<CallSample> {
-  Signal _signal;
+  Call _signal;
   List<dynamic> _peers;
   String _selfId;
   RTCVideoRenderer _localRenderer = RTCVideoRenderer();
@@ -40,7 +40,7 @@ class _CallSampleState extends State<CallSample> {
 
   _connect() async {
     if (_signal == null) {
-      _signal = Signal(this.serverUrl)..connect();
+      _signal = Call(this.serverUrl)..connect();
       _signal.onStateChange = (SignalState state) {
         switch (state) {
           case SignalState.CallStateNew:
