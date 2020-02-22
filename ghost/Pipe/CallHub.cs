@@ -106,8 +106,8 @@ namespace ghost.Pipe
 
     private void OnAnswer(object sender, PipeMessage<CallMessageAnswer> e)
     {
-      var from = this._refs.FirstOrDefault(x => x.pid == e.Pid);
-      var to = _refs.FirstOrDefault(x => x.id == e.Data.To);
+      var from = this.RefByPid(e.Pid);
+      var to = this.RefById(e.Data.To);
 
       var msg = JsonSerializer.Serialize(new
       {
