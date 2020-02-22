@@ -12,6 +12,17 @@ namespace ghost.Calls
 {
   public class CallHub : RocketHub
   {
+    private RocketMap Map { get; }
+
+    public CallHub(RocketMap map, ILogger<CallHub> logger)
+    {
+      Map = map;
+      _logger = logger;
+    }
+
+    public Task Send(string pid, string msg) => Send(Map.Socket(pid), msg);
+    public Task Broadcast(string msg) => Task.WhenAll(Map.Index.Values.Select(ws => Send(ws, msg)));
+
     private static string Peers(IEnumerable<Events.Peer> peers)
     {
       return JsonSerializer.Serialize(new
@@ -47,7 +58,6 @@ namespace ghost.Calls
     }
 
 
-
     private Task Pipe<T>(Func<Piped<T>, Task> func, string pid, string json)
     {
       var piped = new Piped<T>
@@ -64,10 +74,6 @@ namespace ghost.Calls
     private readonly List<(string id, string pid)> _refs = new List<(string id, string pid)>();
     private readonly List<Session> _calls = new List<Session>();
 
-    public CallHub(RocketMap rocketMap, ILogger<CallHub> logger) : base(rocketMap)
-    {
-      _logger = logger;
-    }
 
     public void Dispose()
     {
@@ -84,9 +90,7 @@ namespace ghost.Calls
       };
       _refs.Add((e.Data.Id, e.Pid));
 
-      this.BroadcastPeers();
-
-      return Task.CompletedTask;
+      return this.BroadcastPeers();
     }
 
     private async Task OnBye(Piped<Events.Leave> e)
@@ -193,12 +197,21 @@ namespace ghost.Calls
 
     public override async Task OnConnected(WebSocket ws)
     {
-      await base.OnConnected(ws);
+      Map.Add(ws);
+    }
+
+    public override async Task OnDisconnected(WebSocket ws)
+    {
+      var pid = Map.Pid(ws);
+      _mapPeers.Remove(pid);
+      await Map.Remove(pid);
+
+      await this.BroadcastPeers();
     }
 
     public override async Task Receive(WebSocket ws, WebSocketReceiveResult result, byte[] buffer)
     {
-      var pid = RocketMap.Pid(ws);
+      var pid = Map.Pid(ws);
       var msg = Encoding.UTF8.GetString(buffer, 0, result.Count);
 
       var payload = JsonSerializer.Deserialize<Events.Payload>(msg); // TODO: MAYBE FASTER
@@ -229,10 +242,10 @@ namespace ghost.Calls
       _logger.LogInformation($"recv:{pid}:{msg}");
     }
 
-    private void BroadcastPeers()
+    private Task BroadcastPeers()
     {
       var msg = Peers(_mapPeers.Values);
-      this.Broadcast(msg);
+      return this.Broadcast(msg);
     }
 
     private (string id, string pid) RefById(string id) => this._refs.FirstOrDefault(x => x.id == id);

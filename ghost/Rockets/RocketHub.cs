@@ -9,23 +9,9 @@ namespace ghost.Rockets
 {
   public abstract class RocketHub
   {
-    protected RocketMap RocketMap { get; }
+    public abstract Task OnConnected(WebSocket ws);
 
-    protected RocketHub(RocketMap rocketMap)
-    {
-      RocketMap = rocketMap;
-    }
-
-    public virtual Task OnConnected(WebSocket ws)
-    {
-      RocketMap.Add(ws);
-      return Task.CompletedTask;
-    }
-
-    public virtual async Task OnDisconnected(WebSocket ws)
-    {
-      await RocketMap.Remove(RocketMap.Pid(ws));
-    }
+    public abstract Task OnDisconnected(WebSocket ws);
 
     public async Task Send(WebSocket ws, string message)
     {
@@ -42,10 +28,6 @@ namespace ghost.Rockets
         endOfMessage: true,
         cancellationToken: CancellationToken.None);
     }
-
-    public Task Send(string pid, string msg) => Send(RocketMap.Socket(pid), msg);
-
-    public Task Broadcast(string msg) => Task.WhenAll(RocketMap.Index.Values.Select(ws => Send(ws, msg)));
 
     public abstract Task Receive(WebSocket ws, WebSocketReceiveResult result, byte[] buffer);
   }
