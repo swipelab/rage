@@ -5,7 +5,7 @@ namespace ghost.WebRTC
   public class IceCandidate
   {
     [JsonPropertyName("sdpMLineIndex")] public int SdpMLineIndex { get; set; }
-    [JsonPropertyName("spdMid")] public string SdpMid { get; set; }
+    [JsonPropertyName("sdpMid")] public string SdpMid { get; set; }
     [JsonPropertyName("candidate")] public string Candidate { get; set; }
   }
 }

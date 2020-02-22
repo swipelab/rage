@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ghost.Pipe
+namespace ghost.Rockets
 {
   public abstract class RocketHub
   {

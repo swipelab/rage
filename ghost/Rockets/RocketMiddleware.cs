@@ -4,7 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace ghost.Pipe
+namespace ghost.Rockets
 {
   public class RocketMiddleware
   {

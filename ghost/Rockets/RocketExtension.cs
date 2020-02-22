@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ghost.Pipe
+namespace ghost.Rockets
 {
   public static class RocketExtension
   {

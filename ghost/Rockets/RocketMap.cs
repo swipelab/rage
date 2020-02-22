@@ -5,7 +5,7 @@ using System.Net.WebSockets;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ghost.Pipe
+namespace ghost.Rockets
 {
   public class RocketMap
   {
