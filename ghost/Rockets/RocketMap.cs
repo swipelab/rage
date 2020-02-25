@@ -26,9 +26,14 @@ namespace ghost.Rockets
 
     private async Task Close(WebSocket ws)
     {
-      await ws.CloseAsync(closeStatus: WebSocketCloseStatus.NormalClosure,
-        statusDescription: "Closed by Ghost",
-        cancellationToken: CancellationToken.None);
+      if (ws.State == WebSocketState.Open
+          || ws.State == WebSocketState.CloseReceived
+          || ws.State == WebSocketState.CloseSent)
+      {
+        await ws.CloseAsync(closeStatus: WebSocketCloseStatus.NormalClosure,
+          statusDescription: "Closed by Ghost",
+          cancellationToken: CancellationToken.None);
+      }
     }
 
     private string NewPid() => Guid.NewGuid().ToString();

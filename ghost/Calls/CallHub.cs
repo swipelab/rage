@@ -200,12 +200,23 @@ namespace ghost.Calls
       Map.Add(ws);
     }
 
-    public override async Task OnDisconnected(WebSocket ws)
+    public override Task OnDisconnected(WebSocket ws)
+    {
+      return Remove(ws);
+    }
+
+    public override Task OnError(WebSocket ws)
+    {
+      return Remove(ws);
+    }
+
+    private async Task Remove(WebSocket ws)
     {
       var pid = Map.Pid(ws);
+      _logger.LogWarning($"ws down : {pid}");
+
       _mapPeers.Remove(pid);
       await Map.Remove(pid);
-
       await this.BroadcastPeers();
     }
 

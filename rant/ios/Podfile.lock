@@ -6,10 +6,16 @@ PODS:
     - libyuv-iOS
   - GoogleWebRTC (1.1.27299)
   - libyuv-iOS (1.0.2)
+  - "permission_handler (4.2.0+hotfix.3)":
+    - Flutter
+  - wakelock (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_webrtc (from `.symlinks/plugins/flutter_webrtc/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
+  - wakelock (from `.symlinks/plugins/wakelock/ios`)
 
 SPEC REPOS:
   trunk:
@@ -21,12 +27,18 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_webrtc:
     :path: ".symlinks/plugins/flutter_webrtc/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
+  wakelock:
+    :path: ".symlinks/plugins/wakelock/ios"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   flutter_webrtc: f62e93ff3099e08a54040af9a61e590d062b5d4f
   GoogleWebRTC: 893a5f2f3635437ec3b05ef240993d5713307804
   libyuv-iOS: 5a154ccc84ec754029886ecb607512731fe30640
+  permission_handler: 40520ab8ad1bb78a282b832464e995ec87f77ec6
+  wakelock: bd3dcc6a8bcf53a1c0309780ff192dcee67c6ccb
 
 PODFILE CHECKSUM: e45c292f618eeca3034958d33b444b6e1249b55f
 
