@@ -8,10 +8,6 @@ metadata:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/ssl-redirect: 'true'
 spec:
-  tls:
-    - hosts:
-        - rage.swipelab.co
-      secretName: rage-swipelab-co
   rules:
     - host: rage.swipelab.co
       http:
@@ -20,3 +16,8 @@ spec:
             backend:
               serviceName: ghost-cluster-ip-service
               servicePort: 80
+  tls:
+    - hosts:
+        - rage.swipelab.co
+      secretName: rage-swipelab-co
+            
