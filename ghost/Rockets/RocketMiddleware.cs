@@ -23,23 +23,32 @@ namespace ghost.Rockets
         return;
 
       var ws = await context.WebSockets.AcceptWebSocketAsync();
-      await _hub.OnConnected(ws);
-      await Receive(ws, async (result, buffer) =>
+
+      try
       {
-        switch (result.MessageType)
+        await _hub.OnConnected(ws);
+
+        await Receive(ws, async (result, buffer) =>
         {
-          case WebSocketMessageType.Text:
-            await _hub.Receive(ws, result, buffer);
-            break;
-          case WebSocketMessageType.Binary:
-            break;
-          case WebSocketMessageType.Close:
-            await _hub.OnDisconnected(ws);
-            break;
-          default: //ignore
-            break;
-        }
-      });
+          switch (result.MessageType)
+          {
+            case WebSocketMessageType.Text:
+              await _hub.Receive(ws, result, buffer);
+              break;
+            case WebSocketMessageType.Binary:
+              break;
+            case WebSocketMessageType.Close:
+              await _hub.OnDisconnected(ws);
+              break;
+            default: //ignore
+              break;
+          }
+        });
+      }
+      catch (Exception)
+      {
+        await _hub.OnError(ws);
+      }
     }
 
     private static async Task Receive(WebSocket ws, Action<WebSocketReceiveResult, byte[]> onReceive)

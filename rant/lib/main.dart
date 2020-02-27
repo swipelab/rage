@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:rant/calls/LobbyPage.dart';
+import 'package:rant/calls/call_directory.dart';
+import 'package:rant/calls/call_overlay.dart';
+import 'package:rant/calls/lobby_page.dart';
+import 'package:scoped/scoped.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(Scope(
+      child: MyApp(),
+      store: Store()..add(CallDirectory()),
+    ));
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -12,7 +18,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: LobbyPage(),
+      home: Stack(
+        children: <Widget>[
+          LobbyPage(),
+          CallOverlay(),
+        ],
+      ),
     );
   }
 }

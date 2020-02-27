@@ -4,4 +4,6 @@ docker push swipelab/rage-ghost:latest
 docker push swipelab/rage-ghost:$SHA
 
 kubectl apply -f k8s
+kubectl apply -f k8s/gce
+
 kubectl set image deployments/ghost-deployment ghost=swipelab/rage-ghost:$SHA

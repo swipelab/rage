@@ -13,6 +13,8 @@ namespace ghost.Rockets
 
     public abstract Task OnDisconnected(WebSocket ws);
 
+    public abstract Task OnError(WebSocket ws);
+
     public async Task Send(WebSocket ws, string message)
     {
       if (ws?.State != WebSocketState.Open)
