@@ -4,7 +4,7 @@ import 'package:rant/experimental/signal.dart';
 
 class CallSample extends StatefulWidget {
   //String serverUrl = 'demo.cloudwebrtc.com';
-  String serverUrl = '10.0.0.2';
+  String serverUrl = 'wss://rage.swipelab.co/lobby';
   _CallSampleState createState() => _CallSampleState(serverUrl: serverUrl);
 }
 
