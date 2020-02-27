@@ -4,20 +4,20 @@ metadata:
   name: ingress-service
   annotations:
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/rewrite-target: /
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+    nginx.ingress.kubernetes.io/ssl-redirect: true
 spec:
   rules:
-    - host: rage.swipelab.co
-      http:
-        paths:
-          - path: /?(.*)
-            backend:
-              serviceName: ghost-cluster-ip-service
-              servicePort: 80
+  - host: rage.swipelab.co
+    http:
+      paths:
+      - backend:        
+          serviceName: ghost-cluster-ip-service
+          servicePort: 80
+        path: /
   tls:
-    - hosts:
-        - rage.swipelab.co
-      secretName: rage-swipelab-co
+  - hosts:
+    - rage.swipelab.co
+    secretName: rage-swipelab-co
             
