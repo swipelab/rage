@@ -28,13 +28,14 @@ Steps / Configure:
   * Install Helm
   * Add NGINX
   * Add HTTPS
+  * Create Secrets
 
-## Breakdown
-TODO
 
-### Creating a secret
-kubectl create secret generic <secret_name> --from-literal SECRET_KEY=SECRET_VALUE
-
+### Environment Variables
+```sh
+# Postgres Password
+kubectl create secret generic postgres-password --from-literal postgres-password=...
+```
 
 ### Install Helm @ https://github.com/helm/helm
 ```sh
@@ -43,6 +44,15 @@ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scr
 chmod 700 get_helm.sh
 ./get_helm.sh
 ```
+
+### Ingress - Docker
+```sh
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+#verify
+kubectl get svc -n ingress-nginx
+```
+
 
 ### NGINX @ https://github.com/kubernetes/ingress-nginx
 ```sh
@@ -60,6 +70,15 @@ helm repo add jetstack https://charts.jetstack.io
 helm repo update
 helm install cert-manager --namespace cert-manager --version v0.13.0 jetstack/cert-manager
 ```
+
+
+### Creating a secret
+```sh
+kubectl create secret <secret-type> <secret-name> --from-literal SECRET_KEY=SECRET_VALUE
+```
+
+secret-name : name of secret used as reference in a pod config
+secret-type : generic, tls, docker-registry
 
 ### Types of Users
   * ``User Accounts`` - Identifies a *person* administering our cluster
