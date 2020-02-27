@@ -24,25 +24,16 @@ Steps / Configure:
   * Copy the command line acccess to clipboard
     - ``gcloud container clusters get-credentials rage-cluster --zone europe-west2-a --project co-swipelab-rage``
   * Enter Cloud Shell
-  * Setup ``Helm``
-  * Setup ``INGRESS``
-  * Setup ``CERT-MANAGER``
   * Setup ``Secrets``
-  * Happy Deploy
+  * Setup ``INGRESS``
+  * Setup ``HTTPS``
+  * Happy Deployment
 
 
-### Environment Variables
+### Setup ``Secrets``
 ```sh
 # Postgres Password
 kubectl create secret generic postgres-password --from-literal postgres-password=...
-```
-
-
-### Setup ``Helm`` @ https://github.com/helm/helm
-```sh
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-chmod 700 get_helm.sh
-./get_helm.sh
 ```
 
 ### Setup ``INGRESS`` - GKE @ https://github.com/kubernetes/ingress-nginx
@@ -53,13 +44,20 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 helm install my-nginx stable/nginx-ingress --set rbac.create=true
 ```
 
-### SETUP ``CERT-MANAGER``  @ https://github.com/jetstack/cert-manager
+### SETUP ``HTTPS``  @ https://github.com/jetstack/cert-manager
 ```sh
 kubectl apply --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/v0.13.1/deploy/manifests/00-crds.yaml
 kubectl create namespace cert-manager
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
 helm install cert-manager jetstack/cert-manager --namespace cert-manager --version v0.13.1
+```
+
+### Setup ``Helm`` @ https://github.com/helm/helm
+```sh
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
 ```
 
 ### Ingress - Docker 
