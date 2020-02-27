@@ -23,12 +23,12 @@ Steps / Configure:
   * Click ``Connect``
   * Copy the command line acccess to clipboard
     - ``gcloud container clusters get-credentials rage-cluster --zone europe-west2-a --project co-swipelab-rage``
-  * Run Cloud Shell
-  * Execute the command
-  * Install Helm
-  * Add NGINX
-  * Add HTTPS
-  * Create Secrets
+  * Enter Cloud Shell
+  * Setup ``Helm``
+  * Setup ``INGRESS``
+  * Setup ``HTTPS``
+  * Setup ``Secrets``
+  * Happy Deploy
 
 
 ### Environment Variables
@@ -37,42 +37,37 @@ Steps / Configure:
 kubectl create secret generic postgres-password --from-literal postgres-password=...
 ```
 
-### Install Helm @ https://github.com/helm/helm
+
+### Setup ``Helm`` @ https://github.com/helm/helm
 ```sh
-#install
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
 chmod 700 get_helm.sh
 ./get_helm.sh
 ```
 
-### Ingress - Docker
+### Setup ``INGRESS`` - GKE @ https://github.com/kubernetes/ingress-nginx
 ```sh
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
-#verify
-kubectl get svc -n ingress-nginx
-```
-
-
-### Ingress - GKE @ https://github.com/kubernetes/ingress-nginx
-```sh
+#nginx-ingress
 kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/cloud-generic.yaml
-
-#using Helm
-#helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-#helm install my-nginx stable/nginx-ingress --set rbac.create=true
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+helm install my-nginx stable/nginx-ingress --set rbac.create=true
 ```
 
-### HTTPS  @ https://github.com/jetstack/cert-manager
-
+### SETUP ``HTTPS``  @ https://github.com/jetstack/cert-manager
 ```sh
 kubectl apply --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.13/deploy/manifests/00-crds.yaml
 kubectl create namespace cert-manager
 helm repo add jetstack https://charts.jetstack.io
 helm repo update
 helm install cert-manager --namespace cert-manager --version v0.13.0 jetstack/cert-manager
+```
+
+### Ingress - Docker 
+```sh
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/static/provider/cloud-generic.yaml
+#verify
+kubectl get svc -n ingress-nginx
 ```
 
 ### Creating a secret
