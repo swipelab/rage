@@ -54,11 +54,15 @@ kubectl get svc -n ingress-nginx
 ```
 
 
-### NGINX @ https://github.com/kubernetes/ingress-nginx
+### Ingress - GKE @ https://github.com/kubernetes/ingress-nginx
 ```sh
 kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-helm install my-nginx stable/nginx-ingress --set rbac.create=true
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/cloud-generic.yaml
+
+#using Helm
+#helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+#helm install my-nginx stable/nginx-ingress --set rbac.create=true
 ```
 
 ### HTTPS  @ https://github.com/jetstack/cert-manager
@@ -71,17 +75,15 @@ helm repo update
 helm install cert-manager --namespace cert-manager --version v0.13.0 jetstack/cert-manager
 ```
 
-
 ### Creating a secret
 ```sh
 kubectl create secret <secret-type> <secret-name> --from-literal SECRET_KEY=SECRET_VALUE
 ```
-
-secret-name : name of secret used as reference in a pod config
-secret-type : generic, tls, docker-registry
+* ``secret-name`` - name of secret used as reference in a pod config
+* ``secret-type`` - generic, tls, docker-registry
 
 ### Types of Users
-  * ``User Accounts`` - Identifies a *person* administering our cluster
-  * ``Service Accounts`` - Identifies a *pod* administering a cluster
-  * ``Cluster Role Binding`` - Authorizes an account to do a certain set of action across the entire cluster
-  * ``Role Binding`` - Authorizes an account to do a certain set of acctions in a *single namespace*
+* ``User Accounts`` - Identifies a *person* administering our cluster
+* ``Service Accounts`` - Identifies a *pod* administering a cluster
+* ``Cluster Role Binding`` - Authorizes an account to do a certain set of action across the entire cluster
+* ``Role Binding`` - Authorizes an account to do a certain set of acctions in a *single namespace*
