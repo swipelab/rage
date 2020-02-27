@@ -17,4 +17,3 @@ spec:
           image: swipelab/rage-ghost:latest
           ports:
             - containerPort: 80
-            - containerPort: 443
