@@ -54,11 +54,15 @@ kubectl get svc -n ingress-nginx
 ```
 
 
-### NGINX @ https://github.com/kubernetes/ingress-nginx
+### Ingress - GKE @ https://github.com/kubernetes/ingress-nginx
 ```sh
 kubectl create clusterrolebinding cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-helm install my-nginx stable/nginx-ingress --set rbac.create=true
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/mandatory.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.30.0/deploy/static/provider/cloud-generic.yaml
+
+#using Helm
+#helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+#helm install my-nginx stable/nginx-ingress --set rbac.create=true
 ```
 
 ### HTTPS  @ https://github.com/jetstack/cert-manager
