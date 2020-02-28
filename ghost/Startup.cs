@@ -27,6 +27,8 @@ namespace ghost
       
       services.AddTransient<RocketMap>();
       services.AddSingleton<CallHub>();
+      
+      services.AddControllers();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -43,6 +45,7 @@ namespace ghost
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Raging Rockets!"); });
+        endpoints.MapControllers();
       });
 
       app.UseStaticFiles();

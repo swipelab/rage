@@ -75,6 +75,13 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/mast
 kubectl get svc -n ingress-nginx
 ```
 
+### Accessing your services
+```sh
+#postgres
+kubectl port-forward svc/postgres-cluster-ip-service 5432:5432
+```
+kubectl port-forward <serviceObject> <localPort>:<servicePort>
+
 ### Creating a secret
 ```sh
 kubectl create secret <secret-type> <secret-name> --from-literal SECRET_KEY=SECRET_VALUE
