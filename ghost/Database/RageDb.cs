@@ -12,6 +12,7 @@ namespace ghost.Database
     {
       base.OnModelCreating(m);
 
+      m.Entity<RxUser>().HasKey(x => x.UserId);
       m.Entity<RxCredential>().HasKey(x => x.UserId);
       m.Entity<RxIdentifier>().HasKey(x => new {x.UserId, x.Medium, x.Address});
     }

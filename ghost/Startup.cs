@@ -1,18 +1,13 @@
-using System.Text;
 using ghost.Calls;
-using ghost.Database;
 using ghost.Rockets;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 
 namespace ghost
 {
@@ -41,36 +36,20 @@ namespace ghost
 
       services.AddControllers();
 
-      services.AddAuthentication(x =>
-        {
-          x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-          x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
-        .AddJwtBearer(x =>
-        {
-          x.RequireHttpsMetadata = false;
-          x.SaveToken = true;
+      services.AddJwtAuthentication(Configuration.GetValue<string>("Jwt:Secret"));
+      services.AddDatabase(
+        host: Configuration.GetValue<string>("POSTGRES_HOST"),
+        database: Configuration.GetValue<string>("POSTGRES_DB"),
+        username: Configuration.GetValue<string>("POSTGRES_USER"),
+        password: Configuration.GetValue<string>("POSTGRES_PASSWORD")
+      );
 
-          var secret = Configuration.GetValue<string>("Jwt:Secret");
-          var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
-          x.TokenValidationParameters = new TokenValidationParameters
-          {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = key,
-            ValidateIssuer = false,
-            ValidateAudience = false
-          };
-        });
-
-      services.AddDbContext<RageDb>(x =>
-        x.UseNpgsql(
-          string.Join(";",
-            $"Host={Configuration.GetValue<string>("POSTGRES_HOST")}",
-            $"Database={Configuration.GetValue<string>("POSTGRES_DB")}",
-            $"Username={Configuration.GetValue<string>("POSTGRES_USER")}",
-            $"Password={Configuration.GetValue<string>("POSTGRES_PASSWORD")}"
-          )
-        ));
+      services.AddSwaggerDocument(x =>
+      {
+        x.Title = "Ghost";
+        x.Version = "0.1.0";
+        x.DocumentName = "v-0-1-0";
+      });
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -81,14 +60,11 @@ namespace ghost
       }
 
       app.UseWebSockets();
+      app.MapRocketHub<CallHub>("/rocket");
 
       app.UseAuthentication();
-
       app.UseRouting();
-
-      app.MapRocketHub<CallHub>("/rocket");
       app.UseAuthorization();
-
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Raging Rockets!"); });
@@ -96,6 +72,9 @@ namespace ghost
       });
 
       app.UseStaticFiles();
+
+      app.UseOpenApi();
+      app.UseSwaggerUi3();
     }
   }
 }
