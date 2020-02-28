@@ -14,7 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace ghost.Controllers
 {
   [Route("api/auth")]
-  public class AuthController
+  public class AuthController : Controller
   {
     private readonly IConfiguration _configuration;
     private readonly RageDb _db;
@@ -41,7 +41,7 @@ namespace ghost.Controllers
       {
         Subject = new ClaimsIdentity(new Claim[]
         {
-          new Claim(ClaimTypes.Name, identifier.UserId),
+          new Claim(ClaimTypes.NameIdentifier, identifier.UserId),
         }),
         Expires = DateTime.UtcNow.AddDays(365),
         SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
@@ -60,7 +60,7 @@ namespace ghost.Controllers
     [HttpPost("change-password")]
     public async Task ChangePassword([FromBody] ChangePasswordArgs args)
     {
-      var userId = "alex"; //TODO:
+      var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
       var hash = Hash.ToSha256(args.Password);
 
       var credential = await _db.Credentials.FindAsync(userId);

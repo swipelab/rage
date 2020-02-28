@@ -41,7 +41,7 @@ class LoginView extends StatelessWidget {
                         style: TextStyle(color: Colors.white),
                       ),
                       onPressed: () =>
-                          Scope.get<Account>(context).login("", ""),
+                          Scope.get<Account>(context).login("alex@swipelab.co", "password"),
                     )
                   ],
                 ),

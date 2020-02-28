@@ -1,6 +1,7 @@
 class LoginResponse {
   final String token;
   final RxUser user;
+
   LoginResponse({this.user, this.token});
 }
 
@@ -11,11 +12,20 @@ class RxUser {
   final String isPublic;
 
   RxUser({this.userId, this.alias, this.avatar, this.isPublic});
+
+  static RxUser fromJson(Map<String, dynamic> json) {
+    return RxUser(
+        userId: json["userId"],
+        alias: json["alias"],
+        avatar: json["avatar"],
+        isPublic: json["isPublic"]);
+  }
 }
 
 class RxIdentity {
   final String medium;
   final String address;
+
   RxIdentity({this.medium, this.address});
 }
 

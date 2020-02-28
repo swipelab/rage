@@ -2,6 +2,7 @@ import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
 import 'package:rant/account.dart';
 import 'package:rant/experimental/call_sample.dart';
+import 'package:rant/ghost/ghost_api.dart';
 import 'package:rant/ghost/ghost_service.dart';
 import 'package:rant/settings.dart';
 import 'package:rant/util/branch.dart';
@@ -18,14 +19,8 @@ void main() async {
   //await global.init();
   var settings = Settings.production();
 
-  var chopper = ChopperClient(
-      baseUrl: settings.ghost.baseUrl,
-      services: [GhostService.create()],
-      converter: JsonConverter());
-  final ghostService = GhostService.create(chopper);
-
   final store = Store();
-  store.add(ghostService);
+  store.add(GhostApi(baseUrl: settings.ghost.baseUrl));
   store.add(Account(store));
 
   runApp(Scope(store: store, child: MyApp()));

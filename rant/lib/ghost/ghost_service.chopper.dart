@@ -17,14 +17,14 @@ class _$GhostService extends GhostService {
 
   @override
   Future<Response> getUsersPublic() {
-    final $url = '/api/users/public';
+    final $url = 'api/users/public';
     final $request = Request('GET', $url, client.baseUrl);
     return client.send<dynamic, dynamic>($request);
   }
 
   @override
   Future<Response> postAuthLogin(Map<String, dynamic> args) {
-    final $url = '/api/auth/login';
+    final $url = 'api/auth/login';
     final $body = args;
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
