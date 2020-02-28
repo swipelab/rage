@@ -1,11 +1,22 @@
+class LoginResponse {
+  final String token;
+  final RxUser user;
+  LoginResponse({this.user, this.token});
+}
+
 class RxUser {
-  final String id;
+  final String userId;
   final String alias;
   final String avatar;
-  final String email;
   final String isPublic;
 
-  RxUser({this.id, this.alias, this.avatar, this.email, this.isPublic});
+  RxUser({this.userId, this.alias, this.avatar, this.isPublic});
+}
+
+class RxIdentity {
+  final String medium;
+  final String address;
+  RxIdentity({this.medium, this.address});
 }
 
 class RxRoom {
@@ -15,5 +26,3 @@ class RxRoom {
 
   RxRoom({this.id, this.alias, this.isPublic});
 }
-
-

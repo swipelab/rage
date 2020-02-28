@@ -26,11 +26,13 @@ namespace ghost.Controllers
     }
 
     [HttpPost("login")]
-    public async Task<LoginResult> Login([FromBody] LoginArgs args)
+    public async Task<LoginResponse> Login([FromBody] LoginArgs args)
     {
       var identifier =
         await _db.Identifiers.FirstAsync(x =>
           x.Medium == args.Identifier.Medium && x.Address == args.Identifier.Address && x.IsValid);
+      var user =
+        await _db.Users.FindAsync(identifier.UserId);
 
       var tokenHandler = new JwtSecurityTokenHandler();
       var secret = _configuration.GetValue<string>("Jwt:Secret");
@@ -47,9 +49,10 @@ namespace ghost.Controllers
 
       var token = tokenHandler.CreateToken(tokenDescriptor);
 
-      return new LoginResult
+      return new LoginResponse
       {
-        Token = tokenHandler.WriteToken(token)
+        Token = tokenHandler.WriteToken(token),
+        User = user
       };
     }
 
@@ -92,9 +95,10 @@ namespace ghost.Controllers
       public string Password { get; set; }
     }
 
-    public class LoginResult
+    public class LoginResponse
     {
       public string Token { get; set; }
+      public RxUser User { get; set; }
     }
 
     public class Identifier
