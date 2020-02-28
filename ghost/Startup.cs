@@ -1,9 +1,11 @@
 using ghost.Calls;
+using ghost.Database;
 using ghost.Rockets;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,11 +26,13 @@ namespace ghost
     {
       services.Configure<KestrelServerOptions>(Configuration.GetSection("Kestrel"));
       services.AddLogging(x => x.AddConsole());
-      
+
       services.AddTransient<RocketMap>();
       services.AddSingleton<CallHub>();
-      
+
       services.AddControllers();
+
+      services.AddDbContext<RageDb>(x => x.UseNpgsql(Configuration.GetConnectionString("RageDb")));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
