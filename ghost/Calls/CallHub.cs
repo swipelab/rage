@@ -195,9 +195,10 @@ namespace ghost.Calls
       await this.Send(e.Pid, msg);
     }
 
-    public override async Task OnConnected(WebSocket ws)
+    public override Task OnConnected(WebSocket ws)
     {
       Map.Add(ws);
+      return Task.CompletedTask;
     }
 
     public override Task OnDisconnected(WebSocket ws)

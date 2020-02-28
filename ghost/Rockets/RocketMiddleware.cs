@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Http;
 
 namespace ghost.Rockets
 {
-  public class RocketMiddleware
+  public class RocketMiddleware<T>
+    where T : RocketHub
   {
     private readonly RequestDelegate _next;
     private RocketHub _hub;
 
-    public RocketMiddleware(RequestDelegate next, RocketHub hub)
+    public RocketMiddleware(RequestDelegate next, T hub)
     {
       _next = next;
       _hub = hub;
@@ -23,6 +24,7 @@ namespace ghost.Rockets
         return;
 
       var ws = await context.WebSockets.AcceptWebSocketAsync();
+      var path = context.Request.Path.Value;
 
       try
       {

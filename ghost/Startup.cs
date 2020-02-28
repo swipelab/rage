@@ -59,7 +59,12 @@ namespace ghost
       }
 
       app.UseWebSockets();
-      app.MapRocketHub<CallHub>("/lobby");
+      
+      app.MapRocketHub<CallHub>("/rocket");
+      // app.Map("/rocket", x =>
+      //   
+      //   x.UseMiddleware<RocketMiddleware<CallHub>>()
+      // );
 
       app.UseRouting();
       app.UseEndpoints(endpoints =>

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ghost.Rockets
 {
@@ -8,6 +7,6 @@ namespace ghost.Rockets
   {
     public static IApplicationBuilder MapRocketHub<T>(this IApplicationBuilder app, PathString path)
       where T : RocketHub
-      => app.Map(path, ap => ap.UseMiddleware<RocketMiddleware>(ap.ApplicationServices.GetRequiredService<T>()));
+      => app.Map(path, x => x.UseMiddleware<RocketMiddleware<T>>());
   }
 }
