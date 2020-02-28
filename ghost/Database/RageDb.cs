@@ -13,6 +13,7 @@ namespace ghost.Database
     public DbSet<RxGroup> Groups { get; set; }
     public DbSet<RxChat> Chats { get; set; }
     public DbSet<RxCall> Calls { get; set; }
+    public DbSet<RxRoom> Rooms { get; set; }
   }
 
   [Table("user")]
@@ -22,8 +23,17 @@ namespace ghost.Database
     [Column("alias")] public string Alias { get; set; }
     [Column("avatar")] public string Avatar { get; set; }
     [Column("email")] public string Email { get; set; }
+    [Column("is_public")] public bool IsPublic { get; set; }
   }
 
+  [Table("room")]
+  public class RxRoom
+  {
+    [Column("id")] public string Id { get; set; }
+  }
+
+  
+  
   public class RxGroup
   {
     [Column("id")] public string Id { get; set; }

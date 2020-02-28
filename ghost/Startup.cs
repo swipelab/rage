@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using ghost.Calls;
 using ghost.Database;
 using ghost.Rockets;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace ghost
 {
@@ -17,9 +19,15 @@ namespace ghost
   {
     public IConfiguration Configuration { get; }
 
-    public Startup(IConfiguration configuration)
+    public Startup(IWebHostEnvironment env)
     {
-      Configuration = configuration;
+      var builder = new ConfigurationBuilder()
+        .SetBasePath(env.ContentRootPath)
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+        .AddEnvironmentVariables();
+
+      Configuration = builder.Build();
     }
 
     public void ConfigureServices(IServiceCollection services)
@@ -32,7 +40,15 @@ namespace ghost
 
       services.AddControllers();
 
-      services.AddDbContext<RageDb>(x => x.UseNpgsql(Configuration.GetConnectionString("RageDb")));
+      services.AddDbContext<RageDb>(x =>
+        x.UseNpgsql(
+          string.Join(";",
+            $"Host={Configuration.GetValue<string>("POSTGRES_HOST")}",
+            $"Database={Configuration.GetValue<string>("POSTGRES_DB")}",
+            $"Username={Configuration.GetValue<string>("POSTGRES_USER")}",
+            $"Password={Configuration.GetValue<string>("POSTGRES_PASSWORD")}"
+          )
+        ));
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

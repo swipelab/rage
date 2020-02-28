@@ -7,19 +7,19 @@ using Microsoft.EntityFrameworkCore;
 namespace ghost.Controllers
 {
   [Route("api/users")]
-  public class UserController : Controller
+  public class UsersController : Controller
   {
     private readonly RageDb _db;
 
-    public UserController(RageDb db)
+    public UsersController(RageDb db)
     {
       _db = db;
     }
 
-    [HttpGet()]
+    [HttpGet("public")]
     public async Task<RxUser[]> Get()
     {
-      var result = await _db.Users.ToArrayAsync();
+      var result = await _db.Users.Where(x=>x.IsPublic).ToArrayAsync();
       return result;
     }
 
