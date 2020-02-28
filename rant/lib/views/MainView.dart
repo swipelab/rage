@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rant/account.dart';
+import 'package:scoped/scoped.dart';
 
 class MainView extends StatelessWidget {
-
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -20,7 +21,14 @@ class MainView extends StatelessWidget {
 //                avatar: self.avatar,
 //              ),
             ),
-
+            Expanded(
+              child: Container(),
+            ),
+            Divider(),
+            ListTile(
+              title: Text("Logout"),
+              onTap: () => Scope.get<Account>(context).logout(),
+            )
           ],
         ),
       ),

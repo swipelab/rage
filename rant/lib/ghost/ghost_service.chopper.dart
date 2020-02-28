@@ -1,0 +1,32 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'ghost_service.dart';
+
+// **************************************************************************
+// ChopperGenerator
+// **************************************************************************
+
+class _$GhostService extends GhostService {
+  _$GhostService([ChopperClient client]) {
+    if (client == null) return;
+    this.client = client;
+  }
+
+  @override
+  final definitionType = GhostService;
+
+  @override
+  Future<Response> getUsersPublic() {
+    final $url = '/api/users/public';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response> postAuthLogin(Map<String, dynamic> args) {
+    final $url = '/api/auth/login';
+    final $body = args;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+}
