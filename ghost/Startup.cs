@@ -1,7 +1,8 @@
-using System.Collections.Generic;
+using System.Text;
 using ghost.Calls;
 using ghost.Database;
 using ghost.Rockets;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Npgsql;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ghost
 {
@@ -40,6 +41,27 @@ namespace ghost
 
       services.AddControllers();
 
+      services.AddAuthentication(x =>
+        {
+          x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+          x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer(x =>
+        {
+          x.RequireHttpsMetadata = false;
+          x.SaveToken = true;
+
+          var secret = Configuration.GetValue<string>("Jwt:Secret");
+          var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+          x.TokenValidationParameters = new TokenValidationParameters
+          {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = key,
+            ValidateIssuer = false,
+            ValidateAudience = false
+          };
+        });
+
       services.AddDbContext<RageDb>(x =>
         x.UseNpgsql(
           string.Join(";",
@@ -59,14 +81,14 @@ namespace ghost
       }
 
       app.UseWebSockets();
-      
-      app.MapRocketHub<CallHub>("/rocket");
-      // app.Map("/rocket", x =>
-      //   
-      //   x.UseMiddleware<RocketMiddleware<CallHub>>()
-      // );
+
+      app.UseAuthentication();
 
       app.UseRouting();
+
+      app.MapRocketHub<CallHub>("/rocket");
+      app.UseAuthorization();
+
       app.UseEndpoints(endpoints =>
       {
         endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Raging Rockets!"); });

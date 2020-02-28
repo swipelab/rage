@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace ghost.Database
@@ -9,46 +8,21 @@ namespace ghost.Database
     {
     }
 
+    protected override void OnModelCreating(ModelBuilder m)
+    {
+      base.OnModelCreating(m);
+
+      m.Entity<RxCredential>().HasKey(x => x.UserId);
+      m.Entity<RxIdentifier>().HasKey(x => new {x.UserId, x.Medium, x.Address});
+    }
+
     public DbSet<RxUser> Users { get; set; }
+    public DbSet<RxCredential> Credentials { get; set; }
+    public DbSet<RxIdentifier> Identifiers { get; set; }
+
     public DbSet<RxGroup> Groups { get; set; }
     public DbSet<RxChat> Chats { get; set; }
     public DbSet<RxCall> Calls { get; set; }
     public DbSet<RxRoom> Rooms { get; set; }
-  }
-
-  [Table("user")]
-  public class RxUser
-  {
-    [Column("id")] public string Id { get; set; }
-    [Column("alias")] public string Alias { get; set; }
-    [Column("avatar")] public string Avatar { get; set; }
-    [Column("email")] public string Email { get; set; }
-    [Column("is_public")] public bool IsPublic { get; set; }
-  }
-
-  [Table("room")]
-  public class RxRoom
-  {
-    [Column("id")] public string Id { get; set; }
-  }
-
-  
-  
-  public class RxGroup
-  {
-    [Column("id")] public string Id { get; set; }
-    [Column("description")] public string Description { get; set; }
-    [Column("leader")] public string Leader { get; set; }
-    [Column("users")] public string[] Users { get; set; }
-  }
-
-  public class RxChat
-  {
-    public string Id { get; set; }
-  }
-
-  public class RxCall
-  {
-    public string Id { get; set; }
   }
 }

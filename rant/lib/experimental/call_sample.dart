@@ -3,7 +3,6 @@ import 'package:flutter_webrtc/webrtc.dart';
 import 'package:rant/experimental/signal.dart';
 
 class CallSample extends StatefulWidget {
-  //String serverUrl = 'demo.cloudwebrtc.com';
   String serverUrl = 'wss://rage.swipelab.co/rocket/room/swipelab';
   _CallSampleState createState() => _CallSampleState(serverUrl: serverUrl);
 }
