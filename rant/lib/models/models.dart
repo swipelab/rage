@@ -9,7 +9,7 @@ class RxUser {
   final String userId;
   final String alias;
   final String avatar;
-  final String isPublic;
+  final bool isPublic;
 
   RxUser({this.userId, this.alias, this.avatar, this.isPublic});
 
