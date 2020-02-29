@@ -1,5 +1,6 @@
 using ghost.Calls;
 using ghost.Rockets;
+using ghost.Traces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -46,7 +47,7 @@ namespace ghost
 
       services.AddSwaggerDocument(x =>
       {
-        x.Title = "Ghost";
+        x.Title = "GHOST";
         x.Version = "0.1.0";
         x.DocumentName = "v-0-1-0";
       });
@@ -54,10 +55,12 @@ namespace ghost
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-      if (env.IsDevelopment())
-      {
-        app.UseDeveloperExceptionPage();
-      }
+      // if (env.IsDevelopment())
+      // {
+      //   app.UseDeveloperExceptionPage();
+      // }
+
+      app.UseTrace();
 
       app.UseWebSockets();
       app.MapRocketHub<CallHub>("/rocket");

@@ -31,9 +31,13 @@ namespace ghost.Controllers
       var identifier =
         await _db.Identifiers.FirstAsync(x =>
           x.Medium == args.Identifier.Medium && x.Address == args.Identifier.Address && x.IsValid);
-      var user =
-        await _db.Users.FindAsync(identifier.UserId);
+      var credential =
+        await _db.Credentials.FindAsync(identifier.UserId);
 
+      var hash = Hash.ToSha256(args.Password);
+      if (!string.Equals(hash, credential.Hash))
+        throw new ArgumentException();
+      
       var tokenHandler = new JwtSecurityTokenHandler();
       var secret = _configuration.GetValue<string>("Jwt:Secret");
       var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
@@ -52,7 +56,7 @@ namespace ghost.Controllers
       return new LoginResponse
       {
         Token = tokenHandler.WriteToken(token),
-        User = user
+        User = await _db.Users.FindAsync(identifier.UserId)
       };
     }
 
