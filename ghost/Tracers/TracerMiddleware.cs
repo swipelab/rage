@@ -3,16 +3,15 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace ghost.Traces
+namespace ghost.Tracers
 {
-  public class TraceMiddleware
+  public class TracerMiddleware
   {
     private readonly RequestDelegate _next;
 
-    public TraceMiddleware(RequestDelegate next)
+    public TracerMiddleware(RequestDelegate next)
     {
       _next = next;
     }
@@ -46,10 +45,5 @@ namespace ghost.Traces
           }), Encoding.UTF8, CancellationToken.None);
       }
     }
-  }
-
-  public static class TraceExtension
-  {
-    public static IApplicationBuilder UseTrace(this IApplicationBuilder app) => app.UseMiddleware<TraceMiddleware>();
   }
 }

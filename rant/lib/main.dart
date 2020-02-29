@@ -23,6 +23,7 @@ void main() async {
   final store = Store();
   store.add(sharedPreferences);
   store.add(Storage(store));
+  store.add(settings);
   store.add(GhostClient(store: store, baseUrl: settings.ghost.baseUrl));
   store.add(Account(store));
 
@@ -44,14 +45,12 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Helvetica Neue',
           appBarTheme: Theme.of(context).appBarTheme.copyWith(elevation: 0),
         ),
-        home: Material(
-          child: FluidBuilder<Ref<bool>>(
-            fluid: Scope.get<Account>(context).isAuthenticated,
-            builder: (context, s) => Branch(
-              showSecondary: s.value,
-              primary: (context) => LoginScreen(),
-              secondary: (context) => HomeScreen(),
-            ),
+        home: FluidBuilder<Ref<bool>>(
+          fluid: Scope.get<Account>(context).isAuthenticated,
+          builder: (context, s) => Branch(
+            showSecondary: s.value,
+            primary: (context) => LoginScreen(),
+            secondary: (context) => HomeScreen(),
           ),
         ),
       ),

@@ -1,13 +1,12 @@
 using ghost.Calls;
 using ghost.Rockets;
-using ghost.Traces;
+using ghost.Tracers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace ghost
@@ -55,12 +54,7 @@ namespace ghost
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-      // if (env.IsDevelopment())
-      // {
-      //   app.UseDeveloperExceptionPage();
-      // }
-
-      app.UseTrace();
+      app.UseTracer();
 
       app.UseWebSockets();
       app.MapRocketHub<CallHub>("/rocket");

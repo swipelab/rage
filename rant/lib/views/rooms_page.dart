@@ -15,26 +15,29 @@ class _RoomsPageState extends State<RoomsPage> {
     super.initState();
   }
 
+  Widget buildRoomTile(BuildContext context, RxRoom room) => ListTile(
+        leading: Icon(Icons.group),
+        title: Text(room.alias),
+        subtitle: Text('${room.fxMemberCount} members'),
+        onTap: () {},
+      );
+
   Widget build(BuildContext context) {
     final account = Scope.get<Account>(context);
-
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        trailing: Text('RANTER'),
-      ),
-      child: ListView(
-        children: <Widget>[
+      child: Material(
+        child: CustomScrollView(slivers: [
+          CupertinoSliverNavigationBar(
+            largeTitle: Text('RANTER'),
+          ),
           context.ref<List<RxRoom>>(
               account.rooms,
-              (context, s) => ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: s.length,
-                  itemBuilder: (context, index) => ListTile(
-                        leading: Icon(Icons.group),
-                        title: Text(s[index].alias),
-                        subtitle: Text('${s[index].fxMembers} members'),
-                      )))
-        ],
+              (context, s) => SliverList(
+                    delegate: SliverChildBuilderDelegate((context, index) => buildRoomTile(context, s[index]),
+                        childCount: s.length),
+                  )),
+          SliverFillRemaining()
+        ]),
       ),
     );
   }

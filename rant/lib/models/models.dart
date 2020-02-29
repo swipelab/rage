@@ -34,10 +34,10 @@ class RxRoom {
   final String alias;
   final bool isPublic;
 
-  final int fxMembers;
+  final int fxMemberCount;
 
-  RxRoom({this.id, this.alias, this.isPublic, this.fxMembers = 0});
+  RxRoom({this.id, this.alias, this.isPublic, this.fxMemberCount = 0});
 
   static RxRoom fromJson(Map<String, dynamic> json) =>
-      RxRoom(id: json['id'], alias: json['alias'], isPublic: json['isPublic'], fxMembers: json['fxMembers'] ?? 0);
+      RxRoom(id: json['id'], alias: json['alias'], isPublic: json['isPublic'], fxMemberCount: json['fxMemberCount'] ?? 0);
 }
