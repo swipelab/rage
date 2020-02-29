@@ -14,23 +14,25 @@ class AccountPage extends StatelessWidget {
         navigationBar: CupertinoNavigationBar(
           trailing: Text('ACCOUNT'),
         ),
-        child: ListView(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(top: 24, bottom: 24),
-              child: context.ref(account.profile,
-                  (context, s) => BubbleAvatar.plain(alias: s.alias, avatar: s.avatar, radius: 48, selected: true)),
-            ),
-            Divider(),
-            ListTile(
-              title: context.ref(account.profile, (context, s) => Text(s.alias)),
-              subtitle: Text('alias'),
-            ),
-            ListTile(
-              title: Text('Logout'),
-              onTap: () => account.logout(),
-            )
-          ],
+        child: Material(
+          child: ListView(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.only(top: 24, bottom: 24),
+                child: context.ref(account.profile,
+                    (context, s) => BubbleAvatar.plain(alias: s.alias, avatar: s.avatar, radius: 48, selected: true)),
+              ),
+              Divider(),
+              ListTile(
+                title: context.ref(account.profile, (context, s) => Text(s.alias)),
+                subtitle: Text('alias'),
+              ),
+              ListTile(
+                title: Text('Logout'),
+                onTap: () => account.logout(),
+              )
+            ],
+          ),
         ));
   }
 }

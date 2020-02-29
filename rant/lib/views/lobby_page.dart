@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/webrtc.dart';
 import 'package:rant/experimental/signal.dart';
 
-class ChatsPage extends StatefulWidget {
+class LobbyPage extends StatefulWidget {
   final String rocketUrl;
 
-  ChatsPage({@required this.rocketUrl});
+  LobbyPage({@required this.rocketUrl});
 
-  _ChatsPageState createState() => _ChatsPageState();
+  _LobbyPageState createState() => _LobbyPageState();
 }
 
-class _ChatsPageState extends State<ChatsPage> {
+class _LobbyPageState extends State<LobbyPage> {
   Call _signal;
   List<dynamic> _peers;
   String _selfId;
@@ -117,7 +117,49 @@ class _ChatsPageState extends State<ChatsPage> {
   }
 
   Widget buildCall(BuildContext context) {
-    return Container();
+    return CupertinoPageScaffold(
+        navigationBar: CupertinoNavigationBar(
+          middle: Text('SMILE...'),
+        ),
+        child: Container(
+          child: OrientationBuilder(builder: (context, orientation) {
+            return Container(
+                child: Stack(children: <Widget>[
+              Positioned(
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
+                    decoration: BoxDecoration(color: Colors.black54),
+                    child: RTCVideoView(_remoteRenderer),
+                  )),
+              Positioned(
+                  top: 100,
+                  left: 20,
+                  child: Container(
+                      width: orientation == Orientation.portrait ? 90 : 120,
+                      height: orientation == Orientation.portrait ? 120 : 90,
+                      child: RTCVideoView(_localRenderer))),
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 80),
+                    child: SizedBox(
+                        width: 240,
+                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                          FloatingActionButton(child: Icon(Icons.switch_camera), onPressed: _switchCamera),
+                          FloatingActionButton(
+                              child: Icon(Icons.call_end), onPressed: _hangUp, backgroundColor: Colors.pink),
+                          FloatingActionButton(child: Icon(Icons.mic_off), onPressed: _muteMic),
+                        ])),
+                  ))
+            ]));
+          }),
+        ));
   }
 
   Widget buildScaffold(BuildContext context) {
@@ -125,7 +167,7 @@ class _ChatsPageState extends State<ChatsPage> {
       child: Material(
         child: CustomScrollView(slivers: [
           CupertinoSliverNavigationBar(
-            largeTitle: Text('CHATS'),
+            largeTitle: Text('LOBBY'),
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate((context, index) => _buildPeer(context, _peers[index]),
