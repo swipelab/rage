@@ -5,6 +5,8 @@ namespace ghost.Database
   [Table("room")]
   public class RxRoom
   {
-    [Column("id")] public string Id { get; set; }
+    [Column("room_id")] public string RoomId { get; set; }
+    [Column("alias")] public string Alias { get; set; }
+    [Column("is_public")] public bool IsPublic { get; set; }
   }
 }

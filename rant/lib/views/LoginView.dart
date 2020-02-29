@@ -7,7 +7,7 @@ class LoginView extends StatelessWidget {
   final TextEditingController emailField =
       TextEditingController(text: "alex@swipelab.co");
   final TextEditingController passwordField =
-      TextEditingController(text: "test");
+      TextEditingController(text: "password");
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +81,6 @@ class LoginCanvasPainter extends CustomPainter {
         Paint()
           ..color = Colors.black.withAlpha(60)
           ..maskFilter = MaskFilter.blur(BlurStyle.normal, 3 * 0.57735 + 0.5));
-
 
     canvas.drawPath(
         path,

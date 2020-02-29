@@ -29,4 +29,25 @@ class _$GhostService extends GhostService {
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
+
+  @override
+  Future<Response> getRoomsPublic() {
+    final $url = 'api/rooms/public';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response> getRoomsJoined() {
+    final $url = 'api/rooms/joined';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response> getRoomMembers(String roomId) {
+    final $url = 'api/$roomId/members';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
 }

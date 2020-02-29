@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rant/account.dart';
+import 'package:rant/ux/ux.dart';
 import 'package:scoped/scoped.dart';
 
 class MainView extends StatelessWidget {
@@ -11,16 +12,18 @@ class MainView extends StatelessWidget {
       drawer: Drawer(
         child: Column(
           children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text('alias'),
-              //accountEmail: Text('email'),
-              onDetailsPressed: () {},
-//              currentAccountPicture: BubbleAvatar.plain(
-//                selected: true,
-//                alias: self.alias,
-//                avatar: self.avatar,
-//              ),
-            ),
+            Bond(
+                fluid: Scope.get<Account>(context).profile,
+                builder: (context, s) => UserAccountsDrawerHeader(
+                      accountName: Text(s.value.alias),
+                      //accountEmail: Text('email'),
+                      onDetailsPressed: null,
+                      currentAccountPicture: BubbleAvatar.plain(
+                        selected: true,
+                        alias: s.value.alias,
+                        avatar: s.value.avatar,
+                      ),
+                    )),
             Expanded(
               child: Container(),
             ),

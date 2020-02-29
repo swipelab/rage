@@ -20,6 +20,10 @@ class RxUser {
         avatar: json["avatar"],
         isPublic: json["isPublic"]);
   }
+
+  static RxUser empty(){
+    return RxUser();
+  }
 }
 
 class RxIdentity {

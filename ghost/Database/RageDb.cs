@@ -15,15 +15,20 @@ namespace ghost.Database
       m.Entity<RxUser>().HasKey(x => x.UserId);
       m.Entity<RxCredential>().HasKey(x => x.UserId);
       m.Entity<RxIdentifier>().HasKey(x => new {x.UserId, x.Medium, x.Address});
+
+      m.Entity<RxRoom>().HasKey(x => x.RoomId);
+      m.Entity<RxRoomMember>().HasKey(x => new {x.RoomId, x.UserId});
     }
 
     public DbSet<RxUser> Users { get; set; }
     public DbSet<RxCredential> Credentials { get; set; }
     public DbSet<RxIdentifier> Identifiers { get; set; }
 
+    public DbSet<RxRoom> Rooms { get; set; }
+    public DbSet<RxRoomMember> RoomMembers { get; set; }
+    
     public DbSet<RxGroup> Groups { get; set; }
     public DbSet<RxChat> Chats { get; set; }
     public DbSet<RxCall> Calls { get; set; }
-    public DbSet<RxRoom> Rooms { get; set; }
   }
 }

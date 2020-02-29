@@ -2,7 +2,7 @@ import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
 import 'package:rant/account.dart';
 import 'package:rant/experimental/call_sample.dart';
-import 'package:rant/ghost/ghost_api.dart';
+import 'package:rant/ghost/ghost_client.dart';
 import 'package:rant/ghost/ghost_service.dart';
 import 'package:rant/settings.dart';
 import 'package:rant/util/branch.dart';
@@ -20,7 +20,7 @@ void main() async {
   var settings = Settings.production();
 
   final store = Store();
-  store.add(GhostApi(baseUrl: settings.ghost.baseUrl));
+  store.add(GhostClient(baseUrl: settings.ghost.baseUrl));
   store.add(Account(store));
 
   runApp(Scope(store: store, child: MyApp()));
