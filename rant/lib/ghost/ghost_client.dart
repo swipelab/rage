@@ -1,13 +1,18 @@
 import 'package:chopper/chopper.dart';
 import 'package:flutter/foundation.dart';
+import 'package:rant/account.dart';
 import 'package:rant/ghost/ghost_service.dart';
 import 'package:rant/models/models.dart';
+import 'package:rant/util/storage.dart';
+import 'package:scoped/scoped.dart';
 
 class GhostClient {
   GhostService _service;
   String _token;
 
-  GhostClient({@required String baseUrl}) {
+  Store store;
+
+  GhostClient({this.store, @required String baseUrl}) {
     _service = GhostService.create(ChopperClient(
         baseUrl: baseUrl,
         services: [GhostService.create()],
@@ -18,6 +23,8 @@ class GhostClient {
                   headers: Map<String, String>.from(request.headers)..['Authorization'] = 'Bearer $_token')
         ],
         converter: JsonConverter()));
+
+    _token = store.get<Storage>().getString('token');
   }
 
   Future<LoginResponse> login(String email, String password) async {
@@ -27,9 +34,15 @@ class GhostClient {
     });
 
     final data = LoginResponse.fromJson(response.body);
-    _token = data.token;
+
+    setToken(data.token);
 
     return data;
+  }
+
+  void setToken(String value) {
+    _token = value;
+    store.get<Storage>().setString('token', value);
   }
 
   Future<void> logout() async {

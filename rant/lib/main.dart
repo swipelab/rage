@@ -4,9 +4,11 @@ import 'package:rant/ghost/ghost_client.dart';
 import 'package:rant/settings.dart';
 import 'package:rant/util/branch.dart';
 import 'package:rant/util/focus_fixer.dart';
+import 'package:rant/util/storage.dart';
 import 'package:rant/views/login_screen.dart';
 import 'package:rant/views/home_screen.dart';
 import 'package:scoped/scoped.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'util/util.dart';
 
@@ -16,8 +18,12 @@ void main() async {
   //await global.init();
   var settings = Settings.production();
 
+  final sharedPreferences = await SharedPreferences.getInstance();
+
   final store = Store();
-  store.add(GhostClient(baseUrl: settings.ghost.baseUrl));
+  store.add(sharedPreferences);
+  store.add(Storage(store));
+  store.add(GhostClient(store: store, baseUrl: settings.ghost.baseUrl));
   store.add(Account(store));
 
   runApp(Scope(store: store, child: MyApp()));

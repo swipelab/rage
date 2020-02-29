@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rant/views/account_page.dart';
 import 'package:rant/views/chats_page.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -16,7 +17,7 @@ class HomeScreen extends StatelessWidget {
           case 0:
             return ChatsPage();
           default:
-            return Container();
+            return AccountPage();
         }
       },
     );
