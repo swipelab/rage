@@ -1,5 +1,5 @@
+using System;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using ghost.Database;
 using ghost.Util;
@@ -37,6 +37,22 @@ namespace ghost.Controllers
         .ToArrayAsync();
     }
 
+    [HttpPost("{roomId}/join")]
+    public async Task Join([FromRoute] string roomId, [FromBody] JoinArgs args)
+    {
+      var room = await _db.Rooms.FindAsync(roomId);
+      var userId = this.User.Id();
+      if (room.IsPublic || args.Token != null /*TODO: check if valid*/)
+      {
+        await _db.AddAsync(new RxRoomMember
+        {
+          RoomId = room.RoomId,
+          UserId = userId
+        });
+      }
+      else throw new Exception("unable to join room");
+    }
+
     [HttpGet("{roomId}/members")]
     public Task<RxUser[]> RoomMembers([FromRoute] string roomId)
     {
@@ -44,6 +60,11 @@ namespace ghost.Controllers
         .Where(x => x.RoomId == roomId)
         .Join(_db.Users, x => x.UserId, x => x.UserId, (member, user) => user)
         .ToArrayAsync();
+    }
+
+    public class JoinArgs
+    {
+      public string Token { get; set; }
     }
   }
 }
