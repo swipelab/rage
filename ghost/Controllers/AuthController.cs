@@ -36,7 +36,7 @@ namespace ghost.Controllers
 
       var hash = Hash.ToSha256(args.Password);
       if (!string.Equals(hash, credential.Hash))
-        throw new ArgumentException();
+        throw new Exception("invalid credentials");
       
       var tokenHandler = new JwtSecurityTokenHandler();
       var secret = _configuration.GetValue<string>("Jwt:Secret");

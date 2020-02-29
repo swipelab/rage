@@ -94,3 +94,11 @@ kubectl create secret <secret-type> <secret-name> --from-literal SECRET_KEY=SECR
 * ``Service Accounts`` - Identifies a *pod* administering a cluster
 * ``Cluster Role Binding`` - Authorizes an account to do a certain set of action across the entire cluster
 * ``Role Binding`` - Authorizes an account to do a certain set of acctions in a *single namespace*
+
+
+
+#### Some Docker commands
+```sh
+#https from docker
+docker run --rm -it -p 4443:443 -e ASPNETCORE_URLS="https://+;" -e ASPNETCORE_HTTPS_PORT=8001 -e ASPNETCORE_Kestrel__Certificates__Default__Password="swipelab" -e ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx -v ${HOME}/.aspnet/https:/https/ swipelab/rage-ghost
+```
