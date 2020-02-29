@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
 class ChatsPage extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        trailing: Text('RANTER'),
+        trailing: Text('CHATS'),
       ),
-      child: ListView(
-        children: <Widget>[for (final x in List.generate(100, (i) => i)) ListTile(title: Text('Hey $x'))],
-      ),
+      child: Container(),
     );
   }
 }

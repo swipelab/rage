@@ -28,12 +28,12 @@ class GhostClient {
   }
 
   Future<LoginResponse> login(String email, String password) async {
-    final response = await _service.postAuthLogin({
+    final resp = await _service.postAuthLogin({
       "identifier": {"medium": "email", "address": email},
       "password": password,
     });
 
-    final data = LoginResponse.fromJson(response.body);
+    final data = LoginResponse.fromJson(resp.body);
 
     setToken(data.token);
 
@@ -47,6 +47,12 @@ class GhostClient {
 
   Future<void> logout() async {
     _token = null;
+  }
+
+  Future<List<RxRoom>> getRoomsJoined() async {
+    final resp = await _service.getRoomsJoined();
+    final data = (resp.body as List).cast<Map<String, dynamic>>().map(RxRoom.fromJson).toList();
+    return data;
   }
 }
 

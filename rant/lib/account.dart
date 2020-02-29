@@ -11,12 +11,17 @@ class Account {
 
   final Ref<bool> isAuthenticated = Ref(false);
   final Ref<RxUser> profile = Ref(RxUser.empty());
+  final Ref<List<RxRoom>> rooms = Ref([]);
+
+  GhostClient get _client => _store.get<GhostClient>();
 
   Future<void> login(String email, String password) async {
     try {
-      final resp = await _store.get<GhostClient>().login(email, password);
+      final resp = await _client.login(email, password);
       profile.value = resp.user;
       isAuthenticated.value = true;
+
+      load();
     } catch (e) {}
   }
 
@@ -25,5 +30,13 @@ class Account {
 
     profile.value = RxUser.empty();
     isAuthenticated.value = false;
+  }
+
+  Future<void> load() async {
+//    {
+      rooms.value = await _client.getRoomsJoined();
+//    } catch (e) {
+//      rooms.value = [];
+//    }
   }
 }

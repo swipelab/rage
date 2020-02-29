@@ -14,14 +14,10 @@ class RxUser {
   RxUser({this.userId, this.alias, this.avatar, this.isPublic});
 
   static RxUser fromJson(Map<String, dynamic> json) {
-    return RxUser(
-        userId: json["userId"],
-        alias: json["alias"],
-        avatar: json["avatar"],
-        isPublic: json["isPublic"]);
+    return RxUser(userId: json["userId"], alias: json["alias"], avatar: json["avatar"], isPublic: json["isPublic"]);
   }
 
-  static RxUser empty(){
+  static RxUser empty() {
     return RxUser();
   }
 }
@@ -36,7 +32,12 @@ class RxIdentity {
 class RxRoom {
   final String id;
   final String alias;
-  final String isPublic;
+  final bool isPublic;
 
-  RxRoom({this.id, this.alias, this.isPublic});
+  final int fxMembers;
+
+  RxRoom({this.id, this.alias, this.isPublic, this.fxMembers = 0});
+
+  static RxRoom fromJson(Map<String, dynamic> json) =>
+      RxRoom(id: json['id'], alias: json['alias'], isPublic: json['isPublic'], fxMembers: json['fxMembers'] ?? 0);
 }

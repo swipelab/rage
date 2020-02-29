@@ -6,10 +6,11 @@ class BubbleAvatar extends StatelessWidget {
     String avatar,
     bool selected = false,
     VoidCallback onPressed,
+    double radius = 30,
   }) {
     Widget child = Center(
       child: BubbleAvatar(
-          radius: 30,
+          radius: radius,
           selected: selected,
           child: avatar == null
               ? Text(alias?.isNotEmpty == true ? alias[0] : '')
