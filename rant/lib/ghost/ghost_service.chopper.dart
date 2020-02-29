@@ -23,9 +23,9 @@ class _$GhostService extends GhostService {
   }
 
   @override
-  Future<Response> postAuthLogin(Map<String, dynamic> args) {
+  Future<Response> postAuthLogin(Map<String, dynamic> body) {
     final $url = 'api/auth/login';
-    final $body = args;
+    final $body = body;
     final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
@@ -41,6 +41,14 @@ class _$GhostService extends GhostService {
   Future<Response> getRoomsJoined() {
     final $url = 'api/rooms/joined';
     final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response> postRoomJoin(String roomId, Map<String, dynamic> body) {
+    final $url = 'api/$roomId/join';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
 

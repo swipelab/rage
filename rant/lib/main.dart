@@ -1,14 +1,11 @@
-import 'package:chopper/chopper.dart';
 import 'package:flutter/material.dart';
 import 'package:rant/account.dart';
-import 'package:rant/experimental/call_sample.dart';
 import 'package:rant/ghost/ghost_client.dart';
-import 'package:rant/ghost/ghost_service.dart';
 import 'package:rant/settings.dart';
 import 'package:rant/util/branch.dart';
 import 'package:rant/util/focus_fixer.dart';
-import 'package:rant/views/LoginView.dart';
-import 'package:rant/views/MainView.dart';
+import 'package:rant/views/login_screen.dart';
+import 'package:rant/views/home_screen.dart';
 import 'package:scoped/scoped.dart';
 
 import 'util/util.dart';
@@ -41,12 +38,14 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Helvetica Neue',
           appBarTheme: Theme.of(context).appBarTheme.copyWith(elevation: 0),
         ),
-        home: FluidBuilder<Ref<bool>>(
-          fluid: Scope.get<Account>(context).isAuthenticated,
-          builder: (context, s) => Branch(
-            showSecondary: s.value,
-            primary: (context) => LoginView(),
-            secondary: (context) => MainView(),
+        home: Material(
+          child: FluidBuilder<Ref<bool>>(
+            fluid: Scope.get<Account>(context).isAuthenticated,
+            builder: (context, s) => Branch(
+              showSecondary: s.value,
+              primary: (context) => LoginScreen(),
+              secondary: (context) => HomeScreen(),
+            ),
           ),
         ),
       ),

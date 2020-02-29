@@ -15,8 +15,7 @@ class GhostClient {
           (Request request) async => this._token == null
               ? request
               : request.replace(
-                  headers: Map<String, String>.from(request.headers)
-                    ..['Authorization'] = 'Bearer $_token')
+                  headers: Map<String, String>.from(request.headers)..['Authorization'] = 'Bearer $_token')
         ],
         converter: JsonConverter()));
   }
