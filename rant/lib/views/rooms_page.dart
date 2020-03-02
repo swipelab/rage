@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:rant/account.dart';
 import 'package:rant/models/models.dart';
 import 'package:scoped/scoped.dart';
-import 'package:rant/util/util.dart';
 
 class RoomsPage extends StatefulWidget {
   @override
@@ -30,12 +29,10 @@ class _RoomsPageState extends State<RoomsPage> {
           CupertinoSliverNavigationBar(
             largeTitle: Text('RANTER'),
           ),
-          context.ref<List<RxRoom>>(
-              account.rooms,
-              (context, s) => SliverList(
-                    delegate: SliverChildBuilderDelegate((context, index) => buildRoomTile(context, s[index]),
-                        childCount: s.length),
-                  )),
+          account.rooms.bindValue((context, s) => SliverList(
+                delegate: SliverChildBuilderDelegate((context, index) => buildRoomTile(context, s[index]),
+                    childCount: s.length),
+              )),
           SliverFillRemaining()
         ]),
       ),

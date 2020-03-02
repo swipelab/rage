@@ -7,7 +7,7 @@ import 'package:rant/calls/call_mode.dart';
 import 'package:rant/calls/call_state.dart';
 import 'package:rant/calls/call_tone.dart';
 import 'package:rant/calls/constraints.dart';
-import 'package:rant/util/util.dart';
+import 'package:scoped/scoped.dart';
 import 'package:wakelock/wakelock.dart';
 
 typedef CallFn = void Function(Call call);
@@ -78,7 +78,7 @@ class Call {
     callState.value = initialState;
     this.peerProfile.value = peerProfile;
 
-    callState.bind(_handleCallStateChanged);
+    callState.listen(_handleCallStateChanged);
 
     Wakelock.enable();
     //TODO
@@ -271,6 +271,6 @@ class Call {
   void _dispose() async {
     //TODO:
     Wakelock.disable();
-    callState.free(_handleCallStateChanged);
+    callState.forget(_handleCallStateChanged);
   }
 }

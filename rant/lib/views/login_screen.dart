@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rant/account.dart';
+import 'package:rant/firebase.dart';
 import 'package:rant/ux/google_logo.dart';
 import 'package:rant/ux/ux.dart';
 import 'package:scoped/scoped.dart';
@@ -11,9 +12,9 @@ class LoginScreen extends StatelessWidget {
   Widget buildLogin(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
+          color: Color(0xFF191C26),
           boxShadow: [BoxShadow(blurRadius: 6, spreadRadius: 0, color: Colors.black26)],
-          borderRadius: BorderRadius.circular(16),
-          color: Colors.white),
+          borderRadius: BorderRadius.circular(16)),
       padding: EdgeInsets.all(16),
       child: Column(
         children: <Widget>[
@@ -32,10 +33,24 @@ class LoginScreen extends StatelessWidget {
               "login",
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: () => Scope.get<Account>(context).login(emailField.text, passwordField.text),
+            onPressed: () => context.get<Account>().login(emailField.text, passwordField.text),
           ),
           SizedBox(height: 64),
         ],
+      ),
+    );
+  }
+
+  Widget buildGoogleSignIn(BuildContext context) {
+    return Align(
+      alignment: Alignment.center,
+      child: MaterialButton(
+        padding: EdgeInsets.all(8),
+        child: GoogleLogo(size: 24),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        color: Colors.white,
+        elevation: 3,
+        onPressed: () => context.get<Firebase>().signIn(),
       ),
     );
   }
@@ -52,17 +67,7 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 32),
               buildLogin(context),
               SizedBox(height: 64),
-              Align(
-                alignment: Alignment.center,
-                child: MaterialButton(
-                  padding: EdgeInsets.all(8),
-                  child: GoogleLogo(size: 24),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  color: Colors.white,
-                  elevation: 3,
-                  onPressed: () {},
-                ),
-              ),
+              buildGoogleSignIn(context),
               SizedBox(height: 64),
 //              buildLogin(context),
             ],

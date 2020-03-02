@@ -15,6 +15,10 @@ class Account {
 
   GhostClient get _client => _store.get<GhostClient>();
 
+  Future<void> googleSignIn() async {
+
+  }
+
   Future<void> login(String email, String password) async {
     try {
       final resp = await _client.login(email, password);
@@ -33,10 +37,10 @@ class Account {
   }
 
   Future<void> load() async {
-//    {
+    try {
       rooms.value = await _client.getRoomsJoined();
-//    } catch (e) {
-//      rooms.value = [];
-//    }
+    } catch (e) {
+      rooms.value = [];
+    }
   }
 }

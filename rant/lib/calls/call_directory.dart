@@ -1,4 +1,4 @@
-import 'package:rant/util/util.dart';
+import 'package:scoped/scoped.dart';
 
 import 'call.dart';
 

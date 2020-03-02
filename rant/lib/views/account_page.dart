@@ -1,30 +1,33 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rant/account.dart';
-import 'package:rant/util/ref.dart';
 import 'package:rant/ux/bubble_avatar.dart';
+import 'package:rant/ux/paper.dart';
 import 'package:scoped/scoped.dart';
 
 class AccountPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final account = Scope.get<Account>(context);
+    final account = context.get<Account>();
 
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
-          trailing: Text('ACCOUNT'),
+          trailing: Text(
+            'ACCOUNT',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: Colors.black.withOpacity(0.3),
         ),
-        child: Material(
+        child: Paper(
           child: ListView(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(top: 24, bottom: 24),
-                child: context.ref(account.profile,
-                    (context, s) => BubbleAvatar.plain(alias: s.alias, avatar: s.avatar, radius: 48, selected: true)),
-              ),
+                  padding: EdgeInsets.only(top: 24, bottom: 24),
+                  child: account.profile.bindValue((context, s) =>
+                      BubbleAvatar.plain(alias: s.alias, avatar: s.avatar, radius: 48, selected: true))),
               Divider(),
               ListTile(
-                title: context.ref(account.profile, (context, s) => Text(s.alias)),
+                title: account.profile.bindValue((context, s) => Text(s.alias)),
                 subtitle: Text('alias'),
               ),
               ListTile(

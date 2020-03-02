@@ -36,6 +36,9 @@ class RxRoom {
 
   final int fxMemberCount;
 
+  final String lastMessage = 'An suas viderer pro. Vis cu magna altera, ex his vivendo atomorum.';
+  final String lastSeen = '19:00';
+
   RxRoom({this.id, this.alias, this.isPublic, this.fxMemberCount = 0});
 
   static RxRoom fromJson(Map<String, dynamic> json) =>
