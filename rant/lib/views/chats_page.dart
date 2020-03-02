@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:rant/models/models.dart';
 import 'package:rant/ux/paper.dart';
 import 'package:rant/ux/tile.dart';
+import 'package:rant/views/chat_screen.dart';
 import 'package:scoped/scoped.dart';
 
 class ChatsModel {
@@ -61,11 +62,12 @@ class ChatsPage extends StatelessWidget {
 
   Widget buildRoom(BuildContext context, RxRoom room) {
     return Tile(
-      leading: Image.network('https://lh3.googleusercontent.com/a-/AAuE7mAnJ6r_-sm6_7Fr92fDEfaITA1Wo1HPSeBC2h54=s96-c'),
-      title: TileTitleText(room.alias),
-      stamp: TileStampText(room.lastSeen),
-      body: TileBodyText(room.lastMessage),
-    );
+        leading:
+            Image.network('https://lh3.googleusercontent.com/a-/AAuE7mAnJ6r_-sm6_7Fr92fDEfaITA1Wo1HPSeBC2h54=s96-c'),
+        title: TileTitleText(room.alias),
+        stamp: TileStampText(room.lastSeen),
+        body: TileBodyText(room.lastMessage),
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => ChatScreen(room: room))));
   }
 
   Widget build(BuildContext context) {

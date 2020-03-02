@@ -10,7 +10,8 @@ class Sx {
   static TextStyle get tileBodyStyle =>
       TextStyle(fontSize: 15, height: 1.2, letterSpacing: -0.078, color: Color(0x80B9C4E1));
 
-  static Widget tileBody(String text) => Text(text, style: tileBodyStyle);
+  static TextStyle get appBarTitleStyle =>
+      TextStyle(fontSize: 24, height: 1.25, letterSpacing: -0.078, fontWeight: FontWeight.bold);
 }
 
 class TileTitleText extends StatelessWidget {
@@ -37,18 +38,25 @@ class TileBodyText extends StatelessWidget {
   Widget build(BuildContext context) => Text(text, style: Sx.tileBodyStyle);
 }
 
+class AppBarTitleText extends StatelessWidget {
+  final String text;
+  AppBarTitleText(this.text);
+  Widget build(BuildContext context) => Text(text, style: Sx.appBarTitleStyle);
+}
+
 class Tile extends StatelessWidget {
   final Widget title;
   final Widget body;
   final Widget stamp;
   final Widget leading;
+  final VoidCallback onTap;
 
-  Tile({this.title, this.stamp, this.body, this.leading});
+  Tile({this.title, this.stamp, this.body, this.leading, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.only(right: 12, top: 8, bottom: 8),
         child: Row(

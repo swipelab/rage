@@ -4,6 +4,7 @@ import 'package:rant/account.dart';
 import 'package:rant/global.dart';
 import 'package:rant/util/branch.dart';
 import 'package:rant/util/focus_fixer.dart';
+import 'package:rant/views/chat_screen.dart';
 import 'package:rant/views/login_screen.dart';
 import 'package:rant/views/home_screen.dart';
 import 'package:scoped/scoped.dart';
@@ -34,14 +35,18 @@ class MyApp extends StatelessWidget {
           fontFamily: 'SF Pro Text',
           appBarTheme: Theme.of(context).appBarTheme.copyWith(elevation: 0),
         ),
-        home: FluidBuilder<Ref<bool>>(
-          fluid: Scope.get<Account>(context).isAuthenticated,
-          builder: (context, s) => Branch(
-            showSecondary: s.value,
-            primary: (context) => LoginScreen(),
-            secondary: (context) => HomeScreen(),
-          ),
-        ),
+        routes: {
+          '/': (_) => FluidBuilder<Ref<bool>>(
+                fluid: Scope.get<Account>(context).isAuthenticated,
+                builder: (context, s) => Branch(
+                  showSecondary: s.value,
+                  primary: (context) => LoginScreen(),
+                  secondary: (context) => HomeScreen(),
+                ),
+              ),
+          '/chats/:chatId': (_) => ChatScreen()
+        },
+        initialRoute: '/',
       ),
     );
   }
