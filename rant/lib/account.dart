@@ -1,4 +1,5 @@
-import 'package:rant/ghost/ghost_client.dart';
+import 'package:rant/ghost/ghost.dart';
+import 'package:rant/matrix/matrix.dart';
 import 'package:rant/models/models.dart';
 import 'package:scoped/scoped.dart';
 
@@ -10,37 +11,41 @@ class Account {
   Account(this._store);
 
   final Ref<bool> isAuthenticated = Ref(false);
-  final Ref<RxUser> profile = Ref(RxUser.empty());
+  final Ref<Profile> profile = Ref(Profile());
   final Ref<List<RxRoom>> rooms = Ref([]);
 
-  GhostClient get _client => _store.get<GhostClient>();
+  Ghost get _ghost => _store.get<Ghost>();
 
-  Future<void> googleSignIn() async {
+  Matrix get _matrix => _store.get<Matrix>();
 
-  }
+  Future<void> googleSignIn() async {}
 
   Future<void> login(String email, String password) async {
     try {
-      final resp = await _client.login(email, password);
-      profile.value = resp.user;
-      isAuthenticated.value = true;
+      final user = await _matrix.login(user: email, password: password);
+      profile.value = await _matrix.getProfile(user: user.userId);
 
-      load();
-    } catch (e) {}
+      await load();
+
+      isAuthenticated.value = true;
+    } catch (e) {
+      throw e;
+    }
   }
 
   Future<void> logout() async {
-    await _store.get<GhostClient>().logout();
+    await _store.get<Ghost>().logout();
 
-    profile.value = RxUser.empty();
+    profile.value = Profile();
     isAuthenticated.value = false;
   }
 
   Future<void> load() async {
-    try {
-      rooms.value = await _client.getRoomsJoined();
-    } catch (e) {
-      rooms.value = [];
-    }
+    final joinedRooms = await _matrix.getJoinedRooms();
+    rooms.value = joinedRooms.map((r) => RxRoom(alias: r, id: r, fxMemberCount: 1)).toList();
+  }
+
+  Future<void> loadRoom(RxRoom room) async {
+    final state = await _matrix.getRoomState(room: room.id);
   }
 }

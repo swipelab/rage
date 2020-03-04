@@ -6,13 +6,13 @@ import 'package:rant/models/models.dart';
 import 'package:rant/util/storage.dart';
 import 'package:scoped/scoped.dart';
 
-class GhostClient {
+class Ghost {
   GhostService _service;
   String _token;
 
   Store store;
 
-  GhostClient({this.store, @required String baseUrl}) {
+  Ghost({this.store, @required String baseUrl}) {
     _service = GhostService.create(ChopperClient(
         baseUrl: baseUrl,
         services: [GhostService.create()],

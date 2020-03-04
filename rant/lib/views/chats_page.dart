@@ -2,25 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rant/account.dart';
 import 'package:rant/models/models.dart';
 import 'package:rant/ux/paper.dart';
 import 'package:rant/ux/tile.dart';
 import 'package:rant/views/chat_screen.dart';
 import 'package:scoped/scoped.dart';
-
-class ChatsModel {
-  Ref<List<RxRoom>> rooms = Ref([
-    RxRoom(alias: 'cristi'),
-    RxRoom(
-      alias: 'jouni',
-    ),
-    RxRoom(alias: 'ranters'),
-    RxRoom(alias: 'kristiina'),
-    RxRoom(alias: 'duckies'),
-  ]);
-}
-
-final model = ChatsModel();
+import 'package:rant/util/util.dart';
 
 class ChatsPage extends StatelessWidget {
   Widget buildTop(BuildContext context) {
@@ -64,10 +52,13 @@ class ChatsPage extends StatelessWidget {
     return Tile(
         leading:
             Image.network('https://lh3.googleusercontent.com/a-/AAuE7mAnJ6r_-sm6_7Fr92fDEfaITA1Wo1HPSeBC2h54=s96-c'),
-        title: TileTitleText(room.alias),
+        title: TileTitleText(room.alias.ellipsis(20)),
         stamp: TileStampText(room.lastSeen),
         body: TileBodyText(room.lastMessage),
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => ChatScreen(room: room))));
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
+              context.get<Account>().loadRoom(room);
+              return ChatScreen(room: room);
+            })));
   }
 
   Widget build(BuildContext context) {
@@ -81,10 +72,7 @@ class ChatsPage extends StatelessWidget {
                   SizedBox(height: 96),
                 ]),
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate((context, index) => null, childCount: model.rooms.value.length),
-              ),
-              model.rooms.bindValue((context, rooms) => SliverList(
+              context.get<Account>().rooms.bindValue((context, rooms) => SliverList(
                   delegate: SliverChildBuilderDelegate(
                       (context, index) => ListBody(
                             children: <Widget>[

@@ -6,8 +6,8 @@ import 'package:rant/ux/ux.dart';
 import 'package:scoped/scoped.dart';
 
 class LoginScreen extends StatelessWidget {
-  final TextEditingController emailField = TextEditingController(text: "alex@swipelab.co");
-  final TextEditingController passwordField = TextEditingController(text: "password");
+  final TextEditingController emailField = TextEditingController(text: "agrapine");
+  final TextEditingController passwordField = TextEditingController(text: "TzH2O1985");
 
   Widget buildLogin(BuildContext context) {
     return Container(

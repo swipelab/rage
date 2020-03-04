@@ -44,3 +44,10 @@ class RxRoom {
   static RxRoom fromJson(Map<String, dynamic> json) =>
       RxRoom(id: json['id'], alias: json['alias'], isPublic: json['isPublic'], fxMemberCount: json['fxMemberCount'] ?? 0);
 }
+
+class Profile {
+  final String alias;
+  final String avatar;
+
+  Profile({this.alias, this.avatar});
+}

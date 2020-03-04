@@ -3,7 +3,8 @@ import 'dart:async';
 import 'package:rant/account.dart';
 import 'package:rant/bus.dart';
 import 'package:rant/firebase.dart';
-import 'package:rant/ghost/ghost_client.dart';
+import 'package:rant/ghost/ghost.dart';
+import 'package:rant/matrix/matrix.dart';
 import 'package:rant/settings.dart';
 import 'package:rant/util/storage.dart';
 import 'package:scoped/scoped.dart';
@@ -27,7 +28,8 @@ FutureOr<Store> initStore() async {
   store.add(Firebase());
   store.add(Storage(store));
   store.add(settings);
-  store.add(GhostClient(store: store, baseUrl: settings.ghost.baseUrl));
+  store.add(Ghost(store: store, baseUrl: settings.ghost.baseUrl));
+  store.add(Matrix(store: store, baseUrl: settings.matrix.baseUrl));
   store.add(Account(store));
 
   _getStoreCompleter.complete(store);
