@@ -1,5 +1,6 @@
 import 'package:chopper/chopper.dart';
 import 'package:rant/matrix/matrix_client_service.dart';
+import 'package:rant/matrix/types.dart';
 import 'package:rant/models/models.dart';
 import 'package:scoped/scoped.dart';
 
@@ -89,10 +90,10 @@ class Matrix {
     return result;
   }
 
-  Future<void> getRoomState({String room}) async {
+  Future<List<MxEvent>> getRoomState({String room}) async {
     final resp = await _client.getRoomState(roomId: room);
-    //return resp.body;
-    return;
+    final result = (resp.body).cast<Map<String, dynamic>>().map(MxEvent.fromJson).toList();
+    return result;
   }
 }
 
