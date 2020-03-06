@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rant/account.dart';
+import 'package:rant/matrix/matrix_room.dart';
 import 'package:rant/models/models.dart';
 import 'package:scoped/scoped.dart';
 
@@ -14,10 +15,10 @@ class _RoomsPageState extends State<RoomsPage> {
     super.initState();
   }
 
-  Widget buildRoomTile(BuildContext context, RxRoom room) => ListTile(
+  Widget buildRoomTile(BuildContext context, MatrixRoom room) => ListTile(
         leading: Icon(Icons.group),
-        title: Text(room.alias),
-        subtitle: Text('${room.fxMemberCount} members'),
+        title: room.displayName.bindValue((_, v) => Text(v)),
+        subtitle: Text('0 members'),
         onTap: () {},
       );
 

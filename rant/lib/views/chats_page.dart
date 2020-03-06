@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rant/account.dart';
+import 'package:rant/matrix/matrix_room.dart';
 import 'package:rant/models/models.dart';
 import 'package:rant/ux/paper.dart';
 import 'package:rant/ux/tile.dart';
@@ -48,15 +49,15 @@ class ChatsPage extends StatelessWidget {
     );
   }
 
-  Widget buildRoom(BuildContext context, RxRoom room) {
+  Widget buildRoom(BuildContext context, MatrixRoom room) {
     return Tile(
         leading:
             Image.network('https://lh3.googleusercontent.com/a-/AAuE7mAnJ6r_-sm6_7Fr92fDEfaITA1Wo1HPSeBC2h54=s96-c'),
-        title: TileTitleText(room.alias.ellipsis(20)),
-        stamp: TileStampText(room.lastSeen),
-        body: TileBodyText(room.lastMessage),
+        title: room.displayName.bindValue((_, v) => TileTitleText(v.ellipsis(20))),
+        stamp: room.lastSeen.bindValue((_, v) => TileStampText(v)),
+        body: room.lastMessage.bindValue((_, v) => TileBodyText(v)),
         onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-              context.get<Account>().loadRoom(room);
+              room.sync();
               return ChatScreen(room: room);
             })));
   }

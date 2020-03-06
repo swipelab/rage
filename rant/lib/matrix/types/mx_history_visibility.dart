@@ -6,4 +6,4 @@ enum MxHistoryVisibility {
 }
 
 MxHistoryVisibility mxHistoryVisibility(String value) =>
-    MxHistoryVisibility.values.firstWhere((x) => x.toString() == 'MxHistoryVisiblity.$value');
+    MxHistoryVisibility.values.firstWhere((x) => x.toString() == 'MxHistoryVisibility.$value');

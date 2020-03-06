@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:rant/models/models.dart';
+import 'package:rant/matrix/matrix_room.dart';
 import 'package:rant/ux/paper.dart';
 import 'package:rant/ux/tile.dart';
+
+import 'package:scoped/scoped.dart';
 import 'package:rant/util/util.dart';
 
 class ChatScreen extends StatefulWidget {
-  final RxRoom room;
+  final MatrixRoom room;
 
   ChatScreen({this.room});
 
@@ -14,7 +16,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Paper(
@@ -31,7 +32,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     icon: Icon(Icons.arrow_back),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
-                  AppBarTitleText(widget.room.alias.ellipsis(20)),
+                  widget.room.displayName.bindValue((_, v) => AppBarTitleText(v.ellipsis(20))),
                 ],
               ),
             ),

@@ -1,19 +1,19 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'matrix_client_service.dart';
+part of 'client.dart';
 
 // **************************************************************************
 // ChopperGenerator
 // **************************************************************************
 
-class _$MatrixClientService extends MatrixClientService {
-  _$MatrixClientService([ChopperClient client]) {
+class _$Client extends Client {
+  _$Client([ChopperClient client]) {
     if (client == null) return;
     this.client = client;
   }
 
   @override
-  final definitionType = MatrixClientService;
+  final definitionType = Client;
 
   @override
   Future<Response<Map<String, dynamic>>> postLogin({dynamic body}) {
@@ -76,7 +76,7 @@ class _$MatrixClientService extends MatrixClientService {
   }
 
   @override
-  Future<Response<List<Map<String, dynamic>>>> getRoomState({String roomId}) {
+  Future<Response<List<Map<String, dynamic>>>> _getRoomState({String roomId}) {
     final $url = '_matrix/client/r0/rooms/$roomId/state';
     final $request = Request('GET', $url, client.baseUrl);
     return client
@@ -98,11 +98,11 @@ class _$MatrixClientService extends MatrixClientService {
   }
 
   @override
-  Future<Response> getRoomMessages(
+  Future<Response<Map<String, dynamic>>> _getRoomMessages(
       {String roomId,
       String from,
       String to,
-      MxDir dir,
+      String dir,
       int limit,
       String filter}) {
     final $url = '_matrix/client/r0/rooms/$roomId/messages';
@@ -114,7 +114,7 @@ class _$MatrixClientService extends MatrixClientService {
       'filter': filter
     };
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
-    return client.send<dynamic, dynamic>($request);
+    return client.send<Map<String, dynamic>, Map<String, dynamic>>($request);
   }
 
   @override

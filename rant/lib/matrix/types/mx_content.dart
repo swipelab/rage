@@ -1,3 +1,6 @@
+import 'package:rant/matrix/types/mx_room_avatar.dart';
+import 'package:rant/matrix/types/mx_room_name.dart';
+
 import 'mx_room_canonical_alias.dart';
 import 'mx_room_create.dart';
 import 'mx_room_guest_access.dart';
@@ -11,6 +14,7 @@ import 'mx_room_redaction.dart';
 typedef dynamic _MxEventContentFromJsonFn(Map<String, dynamic> json);
 
 const Map<String, _MxEventContentFromJsonFn> _fromJsonMap = {
+  'm.room.avatar': MxRoomAvatar.fromJson,
   'm.room.canonical_alias': MxRoomCanonicalAlias.fromJson,
   'm.room.create': MxRoomCreate.fromJson,
   'm.room.guest_access': MxRoomGuestAccess.fromJson,
@@ -18,6 +22,7 @@ const Map<String, _MxEventContentFromJsonFn> _fromJsonMap = {
   'm.room.join_rules': MxRoomJoinRules.fromJson,
   'm.room.member': MxRoomMember.fromJson,
   'm.room.message': MxRoomMessage.fromJson,
+  'm.room.name': MxRoomName.fromJson,
   'm.room.power_levels': MxRoomPowerLevels.fromJson,
   'm.room.redaction': MxRoomRedaction.fromJson,
 };

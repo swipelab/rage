@@ -1,19 +1,27 @@
 library matrix;
 
-import 'types.dart';
-import 'matrix_client_service.dart';
+import 'package:rant/matrix/types/mx_get_room_messages.dart';
+
+import 'client.dart';
 
 import 'package:chopper/chopper.dart';
 import 'package:rant/models/models.dart';
 import 'package:scoped/scoped.dart';
+
+import 'types/mx_event.dart';
 
 class Matrix {
   final Store store;
   final String baseUrl;
 
   String _accessToken;
+  String _self;
 
-  MatrixClientService _client;
+  String get self => _self;
+
+  Client _client;
+
+  Client get client => _client;
 
   static String mxcToUrl(Uri uri, {int width, int height}) {
     if (uri != null && uri.isScheme("mxc")) {
@@ -33,10 +41,10 @@ class Matrix {
   }
 
   Matrix({this.store, this.baseUrl}) {
-    _client = MatrixClientService.create(ChopperClient(
+    _client = Client.create(ChopperClient(
         baseUrl: baseUrl,
         services: [
-          MatrixClientService.create(),
+          Client.create(),
         ],
         interceptors: [_accessTokenInterceptor],
         converter: JsonConverter()));
@@ -58,6 +66,7 @@ class Matrix {
 //    final resp = await _client.login(body: {"type": "m.login.password", "user": user, "password": password});
 //    final body = MxClientLoginResponse.fromJson(resp.body);
     _accessToken = body.accessToken;
+    _self = body.userId;
     return body;
   }
 
@@ -93,11 +102,7 @@ class Matrix {
     return result;
   }
 
-  Future<List<MxEvent>> getRoomState({String room}) async {
-    final resp = await _client.getRoomState(roomId: room);
-    final result = resp.body.map(MxEvent.fromJson).toList();
-    return result;
-  }
+  Future<MxGetRoomMessages> getRoomMessages({String roomId}) async => await _client.getRoomMessages(roomId: roomId);
 }
 
 class MxClientLoginResponse {

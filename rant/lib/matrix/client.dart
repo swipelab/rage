@@ -1,15 +1,18 @@
 import "dart:async";
 import 'package:chopper/chopper.dart';
-import 'package:rant/matrix/types/mx_authentication_data.dart';
-import 'package:rant/matrix/types/mx_dir.dart';
+import 'package:rant/matrix/types/mx_event.dart';
+
+import 'types/mx_dir.dart';
+import 'types/mx_get_room_messages.dart';
 
 import 'types/mx_device.dart';
+import 'types/mx_authentication_data.dart';
 
-part "matrix_client_service.chopper.dart";
+part "client.chopper.dart";
 
 @ChopperApi(baseUrl: "_matrix/client/r0")
-abstract class MatrixClientService extends ChopperService {
-  static MatrixClientService create([ChopperClient client]) => _$MatrixClientService(client);
+abstract class Client extends ChopperService {
+  static Client create([ChopperClient client]) => _$Client(client);
 
   @Post(path: 'login')
   Future<Response<Map<String, dynamic>>> postLogin({
@@ -57,9 +60,12 @@ abstract class MatrixClientService extends ChopperService {
   });
 
   @Get(path: 'rooms/{roomId}/state')
-  Future<Response<List<Map<String, dynamic>>>> getRoomState({
+  Future<Response<List<Map<String, dynamic>>>> _getRoomState({
     @Path() String roomId,
   });
+
+  Future<List<MxEvent>> getRoomState({String roomId}) =>
+      _getRoomState(roomId: roomId).then((resp) => resp.body.map(MxEvent.fromJson).toList());
 
   @Get(path: 'rooms/{roomId}/members')
   Future<Response> getRoomMembers({
@@ -72,14 +78,32 @@ abstract class MatrixClientService extends ChopperService {
   });
 
   @Get(path: 'rooms/{roomId}/messages')
-  Future<Response> getRoomMessages({
+  Future<Response<Map<String, dynamic>>> _getRoomMessages({
     @Path() String roomId,
     @Query() String from,
     @Query() String to,
-    @Query() MxDir dir,
+    @Query() String dir,
     @Query() int limit,
     @Query() String filter,
   });
+
+  Future<MxGetRoomMessages> getRoomMessages({
+    String roomId,
+    String from,
+    String to,
+    MxDir dir = MxDir.b,
+    int limit,
+    String filter,
+  }) async =>
+      MxGetRoomMessages.fromJson((await _getRoomMessages(
+        roomId: roomId,
+        from: from,
+        to: to,
+        dir: mxDirString(dir),
+        limit: limit,
+        filter: filter,
+      ))
+          .body);
 
   @Put(path: 'rooms/{roomId}/state/{eventType}/{stateKey}')
   Future<Response> putRoomStateEvent({
