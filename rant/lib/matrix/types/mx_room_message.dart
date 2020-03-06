@@ -1,12 +1,12 @@
-import 'package:rant/matrix/types/mx_audio.dart';
-import 'package:rant/matrix/types/mx_video.dart';
-
 import 'mx_file.dart';
 import 'mx_location.dart';
 import 'mx_text.dart';
 import 'mx_emote.dart';
 import 'mx_notice.dart';
 import 'mx_image.dart';
+import 'mx_audio.dart';
+import 'mx_video.dart';
+import 'mx_presence.dart';
 
 typedef dynamic _MxRoomMessageFromJsonFn(Map<String, dynamic> json);
 
@@ -19,6 +19,7 @@ const Map<String, _MxRoomMessageFromJsonFn> _fromJsonMap = {
   'm.audio': MxAudio.fromJson,
   'm.location': MxLocation.fromJson,
   'm.video': MxVideo.fromJson,
+  'm.presence': MxPresence.fromJson,
 };
 
 abstract class MxRoomMessage {
