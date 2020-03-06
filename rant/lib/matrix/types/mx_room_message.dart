@@ -1,4 +1,5 @@
 import 'package:rant/matrix/types/mx_audio.dart';
+import 'package:rant/matrix/types/mx_video.dart';
 
 import 'mx_file.dart';
 import 'mx_location.dart';
@@ -17,6 +18,7 @@ const Map<String, _MxRoomMessageFromJsonFn> _fromJsonMap = {
   'm.file': MxFile.fromJson,
   'm.audio': MxAudio.fromJson,
   'm.location': MxLocation.fromJson,
+  'm.video': MxVideo.fromJson,
 };
 
 abstract class MxRoomMessage {
