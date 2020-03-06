@@ -51,8 +51,7 @@ class ChatsPage extends StatelessWidget {
 
   Widget buildRoom(BuildContext context, MatrixRoom room) {
     return Tile(
-        leading:
-            Image.network('https://lh3.googleusercontent.com/a-/AAuE7mAnJ6r_-sm6_7Fr92fDEfaITA1Wo1HPSeBC2h54=s96-c'),
+        leading: room.avatarUrl.bindValue((_, v) => v == null ? Container(color: Colors.blue) : Image.network(v)),
         title: room.displayName.bindValue((_, v) => TileTitleText(v.ellipsis(20))),
         stamp: room.lastSeen.bindValue((_, v) => TileStampText(v)),
         body: room.lastMessage.bindValue((_, v) => TileBodyText(v)),

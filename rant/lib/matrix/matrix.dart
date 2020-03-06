@@ -23,7 +23,10 @@ class Matrix {
 
   Client get client => _client;
 
-  static String mxcToUrl(Uri uri, {int width, int height}) {
+  static String mxcToUrl(String url, {int width, int height}) {
+    if (url?.isNotEmpty != true) return null;
+
+    Uri uri = Uri.tryParse(url);
     if (uri != null && uri.isScheme("mxc")) {
       var host = uri.host;
       var authority = uri.authority;
@@ -37,7 +40,7 @@ class Matrix {
       }
     }
 
-    return uri?.toString() ?? "";
+    return uri?.toString();
   }
 
   Matrix({this.store, this.baseUrl}) {
@@ -92,7 +95,7 @@ class Matrix {
     final resp = await _client.getProfile(user);
     return Profile(
       alias: resp.body['displayname'],
-      avatar: mxcToUrl(Uri.tryParse(resp.body['avatar_url'])),
+      avatar: mxcToUrl(resp.body['avatar_url']),
     );
   }
 
