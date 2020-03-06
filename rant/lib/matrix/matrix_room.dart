@@ -30,7 +30,6 @@ class MatrixRoom {
   Ref<List<MxEvent>> messages = Ref([]);
 
   Future sync() async {
-    displayName.value = roomId;
     var states = await matrix.client.getRoomState(roomId: roomId);
 
     states.forEach(handleEvent);

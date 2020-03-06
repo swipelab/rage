@@ -30,10 +30,10 @@ dependencies:
 
   font_awesome_flutter: ^8.7.0
 
-  firebase_core: ^0.4.4+2
-  firebase_auth: ^0.15.5+2
-  google_sign_in: ^4.1.4
-  cloud_firestore: ^0.13.4
+#  firebase_core: ^0.4.4+2
+#  firebase_auth: ^0.15.5+2
+#  google_sign_in: ^4.1.4
+#  cloud_firestore: ^0.13.4
 
 #dependency_overrides:
 #  scoped:

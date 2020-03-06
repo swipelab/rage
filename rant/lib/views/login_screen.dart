@@ -50,7 +50,7 @@ class LoginScreen extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         color: Colors.white,
         elevation: 3,
-        onPressed: () => context.get<Firebase>().signIn(),
+        //onPressed: () => context.get<Firebase>().signIn(),
       ),
     );
   }
