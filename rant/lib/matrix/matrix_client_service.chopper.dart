@@ -71,9 +71,10 @@ class _$MatrixClientService extends MatrixClientService {
   }
 
   @override
-  Future<Response<List>> getRoomState({String roomId}) {
+  Future<Response<List<Map<String, dynamic>>>> getRoomState({String roomId}) {
     final $url = '_matrix/client/r0/rooms/$roomId/state';
     final $request = Request('GET', $url, client.baseUrl);
-    return client.send<List, List>($request);
+    return client
+        .send<List<Map<String, dynamic>>, Map<String, dynamic>>($request);
   }
 }

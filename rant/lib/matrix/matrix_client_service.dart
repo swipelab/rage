@@ -29,5 +29,5 @@ abstract class MatrixClientService extends ChopperService {
   Future<Response<Map<String, dynamic>>> getJoinedRooms();
 
   @Get(path: 'rooms/{roomId}/state')
-  Future<Response<List<dynamic>>> getRoomState({@Path() String roomId});
+  Future<Response<List<Map<String, dynamic>>>> getRoomState({@Path() String roomId});
 }

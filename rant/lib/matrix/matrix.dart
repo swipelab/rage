@@ -1,6 +1,9 @@
+library matrix;
+
+import 'types.dart';
+
 import 'package:chopper/chopper.dart';
 import 'package:rant/matrix/matrix_client_service.dart';
-import 'package:rant/matrix/types.dart';
 import 'package:rant/models/models.dart';
 import 'package:scoped/scoped.dart';
 
@@ -92,7 +95,7 @@ class Matrix {
 
   Future<List<MxEvent>> getRoomState({String room}) async {
     final resp = await _client.getRoomState(roomId: room);
-    final result = (resp.body).cast<Map<String, dynamic>>().map(MxEvent.fromJson).toList();
+    final result = resp.body.map(MxEvent.fromJson).toList();
     return result;
   }
 }
