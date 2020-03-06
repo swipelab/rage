@@ -1,9 +1,9 @@
 library matrix;
 
 import 'types.dart';
+import 'matrix_client_service.dart';
 
 import 'package:chopper/chopper.dart';
-import 'package:rant/matrix/matrix_client_service.dart';
 import 'package:rant/models/models.dart';
 import 'package:scoped/scoped.dart';
 
