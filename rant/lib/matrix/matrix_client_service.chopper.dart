@@ -98,9 +98,22 @@ class _$MatrixClientService extends MatrixClientService {
   }
 
   @override
-  Future<Response> getRoomMessages({String roomId}) {
+  Future<Response> getRoomMessages(
+      {String roomId,
+      String from,
+      String to,
+      MxDir dir,
+      int limit,
+      String filter}) {
     final $url = '_matrix/client/r0/rooms/$roomId/messages';
-    final $request = Request('GET', $url, client.baseUrl);
+    final $params = <String, dynamic>{
+      'from': from,
+      'to': to,
+      'dir': dir,
+      'limit': limit,
+      'filter': filter
+    };
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
     return client.send<dynamic, dynamic>($request);
   }
 
@@ -185,9 +198,10 @@ class _$MatrixClientService extends MatrixClientService {
   }
 
   @override
-  Future<Response> join({String roomIdOrAlias}) {
+  Future<Response> join({String roomIdOrAlias, dynamic body}) {
     final $url = '_matrix/client/r0/join/$roomIdOrAlias';
-    final $request = Request('POST', $url, client.baseUrl);
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
 
@@ -255,6 +269,59 @@ class _$MatrixClientService extends MatrixClientService {
       'query': query
     };
     final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response> putPresenceStatus({String userId, dynamic body}) {
+    final $url = '_matrix/client/r0/presence/$userId/status';
+    final $body = body;
+    final $request = Request('PUT', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response> getPresenceStatus({String userId}) {
+    final $url = '_matrix/client/r0/presence/$userId/status';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future<Response<Map<String, dynamic>>> _getDevices() {
+    final $url = '_matrix/client/r0/devices';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<Map<String, dynamic>, Map<String, dynamic>>($request);
+  }
+
+  @override
+  Future<Response<Map<String, dynamic>>> _getDevice({String deviceId}) {
+    final $url = '_matrix/client/r0/devices/$deviceId';
+    final $request = Request('GET', $url, client.baseUrl);
+    return client.send<Map<String, dynamic>, Map<String, dynamic>>($request);
+  }
+
+  @override
+  Future<Response> _putDevice({String deviceId, dynamic body}) {
+    final $url = '_matrix/client/r0/devices/$deviceId';
+    final $body = body;
+    final $request = Request('PUT', $url, client.baseUrl, body: $body);
+    return client.send<dynamic, dynamic>($request);
+  }
+
+  @override
+  Future deleteDevice({String deviceId, dynamic body}) {
+    final $url = '_matrix/client/r0/devices/$deviceId';
+    final $body = body;
+    final $request = Request('DELETE', $url, client.baseUrl, body: $body);
+    return client.send($request);
+  }
+
+  @override
+  Future<Response> _deleteDevices({dynamic body}) {
+    final $url = '_matrix/client/r0/delete_devices';
+    final $body = body;
+    final $request = Request('POST', $url, client.baseUrl, body: $body);
     return client.send<dynamic, dynamic>($request);
   }
 }

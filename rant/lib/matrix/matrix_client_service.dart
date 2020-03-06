@@ -1,5 +1,9 @@
 import "dart:async";
 import 'package:chopper/chopper.dart';
+import 'package:rant/matrix/types/mx_authentication_data.dart';
+import 'package:rant/matrix/types/mx_dir.dart';
+
+import 'types/mx_device.dart';
 
 part "matrix_client_service.chopper.dart";
 
@@ -70,6 +74,11 @@ abstract class MatrixClientService extends ChopperService {
   @Get(path: 'rooms/{roomId}/messages')
   Future<Response> getRoomMessages({
     @Path() String roomId,
+    @Query() String from,
+    @Query() String to,
+    @Query() MxDir dir,
+    @Query() int limit,
+    @Query() String filter,
   });
 
   @Put(path: 'rooms/{roomId}/state/{eventType}/{stateKey}')
@@ -135,6 +144,7 @@ abstract class MatrixClientService extends ChopperService {
   @Post(path: 'join/{roomIdOrAlias}')
   Future<Response> join({
     @Path() String roomIdOrAlias,
+    @Body() dynamic body,
   });
 
   @Post(path: 'rooms/{roomId}/leave')
@@ -182,4 +192,43 @@ abstract class MatrixClientService extends ChopperService {
     @Query() String since,
     @Query() String query,
   });
+
+  @Put(path: 'presence/{userId}/status')
+  Future<Response> putPresenceStatus({@Path() String userId, @Body() dynamic body});
+
+  @Get(path: 'presence/{userId}/status')
+  Future<Response> getPresenceStatus({@Path() String userId});
+
+  Future<List<MxDevice>> getDevices() async {
+    final resp = await _getDevices();
+    final result = (resp.body['devices'] as List).cast<Map<String, dynamic>>().map(MxDevice.fromJson).toList();
+    return result;
+  }
+
+  @Get(path: 'devices')
+  Future<Response<Map<String, dynamic>>> _getDevices();
+
+  Future<MxDevice> getDevice({String deviceId}) async => MxDevice.fromJson((await _getDevice(deviceId: deviceId)).body);
+
+  @Get(path: 'devices/{deviceId}')
+  Future<Response<Map<String, dynamic>>> _getDevice({@Path() String deviceId});
+
+  @Put(path: 'devices/{deviceId}')
+  Future<Response> _putDevice({@Path() String deviceId, @Body() dynamic body});
+
+  Future putDevice({String deviceId, String displayName}) async => await _putDevice(
+        deviceId: deviceId,
+        body: {
+          "display_name": displayName,
+        },
+      );
+
+  @Delete(path: 'devices/{deviceId}')
+  Future deleteDevice({@Path() String deviceId, @Body() dynamic body});
+
+  Future deleteDevices({List<String> devices, MxAuthenticationData auth}) async =>
+      _deleteDevices(body: {devices: devices, auth: auth?.toJson()});
+
+  @Post(path: 'delete_devices')
+  Future<Response> _deleteDevices({@Body() dynamic body});
 }
