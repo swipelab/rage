@@ -1,5 +1,6 @@
 library matrix;
 
+import 'package:rant/matrix/responses/mx_client_get_sync_response.dart';
 import 'package:rant/matrix/types/mx_get_room_messages.dart';
 
 import 'client.dart';
@@ -71,6 +72,11 @@ class Matrix {
     _accessToken = body.accessToken;
     _self = body.userId;
     return body;
+  }
+
+  Future<MxClientGetSyncResponse> sync() async {
+    final resp = await client.getSync();
+    return MxClientGetSyncResponse.fromJson(resp.body);
   }
 
   Future<String> getProfileDisplayName({String user}) async {

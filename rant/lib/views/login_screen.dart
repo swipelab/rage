@@ -22,6 +22,7 @@ class LoginScreen extends StatelessWidget {
           Transform.translate(
               offset: Offset(0, -28),
               child: Text('RANTER', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22))),
+          context.get<Account>().count.bindValue((context, value)=> Text(value.toString())),
           EmailField(controller: emailField),
           PasswordField(controller: passwordField),
           SizedBox(height: 64),

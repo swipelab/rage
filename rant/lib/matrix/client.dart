@@ -19,6 +19,15 @@ abstract class Client extends ChopperService {
     @Body() dynamic body,
   });
 
+  @Get(path: 'sync')
+  Future<Response<Map<String, dynamic>>> getSync({
+    @Query() String filter,
+    @Query() String since,
+    @Query("full_state") bool fullState,
+    @Query("set_presence") String setPresence,
+    @Query() int timeout = 0,
+  });
+
   @Get(path: 'profile/{userId}/displayname')
   Future<Response<Map<String, dynamic>>> getProfileDisplayName(
     @Path() String userId,

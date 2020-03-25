@@ -15,17 +15,17 @@ class HomeScreen extends StatelessWidget {
         tabBar: CupertinoTabBar(
           backgroundColor: Colors.black.withOpacity(0.3),
           items: [
-            BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.dragon)),
             BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.solidComments)),
+            BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.dragon)),
             BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.cog))
           ],
         ),
         tabBuilder: (BuildContext context, index) {
           switch (index) {
             case 0:
-              return LobbyPage(rocketUrl: Scope.get<Settings>(context).ghost.rocketUrl('lobby'));
-            case 1:
               return ChatsPage();
+            case 1:
+              return Container();
             default:
               return AccountPage();
           }

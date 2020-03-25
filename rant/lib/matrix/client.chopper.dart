@@ -24,6 +24,25 @@ class _$Client extends Client {
   }
 
   @override
+  Future<Response<Map<String, dynamic>>> getSync(
+      {String filter,
+      String since,
+      bool fullState,
+      String setPresence,
+      int timeout = 0}) {
+    final $url = '_matrix/client/r0/sync';
+    final $params = <String, dynamic>{
+      'filter': filter,
+      'since': since,
+      'full_state': fullState,
+      'set_presence': setPresence,
+      'timeout': timeout
+    };
+    final $request = Request('GET', $url, client.baseUrl, parameters: $params);
+    return client.send<Map<String, dynamic>, Map<String, dynamic>>($request);
+  }
+
+  @override
   Future<Response<Map<String, dynamic>>> getProfileDisplayName(String userId) {
     final $url = '_matrix/client/r0/profile/$userId/displayname';
     final $request = Request('GET', $url, client.baseUrl);
