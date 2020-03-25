@@ -1,3 +1,0 @@
-config:
-  gcp:project: co-swipelab-rage
-  gcp:zone: europe-west2-a

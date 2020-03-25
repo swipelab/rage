@@ -1,4 +1,4 @@
-docker build -t swipelab/rage-ghost:latest -t swipelab/rage-ghost:$SHA -f ./ghost/Dockerfile ./ghost
+docker build -t swipelab/rage-ghost:latest -t swipelab/rage-ghost:$SHA -f ./ghost/Dockerfile .
 
 docker push swipelab/rage-ghost:latest
 docker push swipelab/rage-ghost:$SHA

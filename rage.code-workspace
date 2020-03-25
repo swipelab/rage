@@ -4,16 +4,10 @@
 			"path": "."
 		},
 		{
-			"path": "gosh"
-		},
-		{
 			"path": "rant"
 		},
 		{
 			"path": "fire"
-		},
-		{
-			"path": "insta"
 		}
 	],
 	"settings": {}
