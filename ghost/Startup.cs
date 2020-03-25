@@ -1,5 +1,6 @@
 using ghost.Calls;
 using ghost.Rockets;
+using ghost.Services;
 using ghost.Tracers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,8 @@ namespace ghost
 
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddGrpc();
+
       services.Configure<KestrelServerOptions>(Configuration.GetSection("Kestrel"));
       services.AddLogging(x => x.AddConsole());
 
@@ -35,7 +38,6 @@ namespace ghost
       services.AddSingleton<CallHub>();
 
       services.AddControllers();
-
       services.AddJwtAuthentication(Configuration.GetValue<string>("Jwt:Secret"));
       services.AddDatabase(
         host: Configuration.GetValue<string>("POSTGRES_HOST"),
@@ -64,6 +66,8 @@ namespace ghost
       app.UseAuthorization();
       app.UseEndpoints(endpoints =>
       {
+        endpoints.MapGrpcService<RockService>();
+
         endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Raging Rockets!"); });
         endpoints.MapControllers();
       });

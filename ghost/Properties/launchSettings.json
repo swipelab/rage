@@ -1,16 +1,21 @@
-﻿{
+{
   "profiles": {
     "ghost": {
       "commandName": "Project",
-      "launchBrowser": false,
-      "applicationUrl": "https://127.0.0.1:5001",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
         "POSTGRES_HOST": "localhost",
         "POSTGRES_DB": "postgres",
+        "POSTGRES_PASSWORD": "admnstrator",
         "POSTGRES_USER": "postgres",
-        "POSTGRES_PASSWORD": "admnstrator"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://127.0.0.1:443"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "publishAllPorts": true,
+      "useSSL": true
     }
   }
 }

@@ -1,8 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ghost", "ghost\ghost.csproj", "{DEF9EF56-B9AE-4F6B-AC21-25AF70DB3F8F}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ghost", "ghost\ghost.csproj", "{DEF9EF56-B9AE-4F6B-AC21-25AF70DB3F8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ghost.test", "ghost.test\ghost.test.csproj", "{16B840A2-A154-4546-A517-BAC7CB54E1D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ghost.test", "ghost.test\ghost.test.csproj", "{16B840A2-A154-4546-A517-BAC7CB54E1D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ghost.client", "ghost.client\ghost.client.csproj", "{65DA39B7-92CE-4427-BABE-C8F0343B3361}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +23,15 @@ Global
 		{16B840A2-A154-4546-A517-BAC7CB54E1D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16B840A2-A154-4546-A517-BAC7CB54E1D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16B840A2-A154-4546-A517-BAC7CB54E1D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65DA39B7-92CE-4427-BABE-C8F0343B3361}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65DA39B7-92CE-4427-BABE-C8F0343B3361}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65DA39B7-92CE-4427-BABE-C8F0343B3361}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65DA39B7-92CE-4427-BABE-C8F0343B3361}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8102CDF4-CA79-492E-BCAC-145BEBF3FB44}
 	EndGlobalSection
 EndGlobal
