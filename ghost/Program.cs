@@ -12,6 +12,10 @@ namespace ghost
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
       Host.CreateDefaultBuilder(args)
-        .ConfigureWebHostDefaults(wb => { wb.UseStartup<Startup>(); });
+        .ConfigureWebHostDefaults(wb =>
+        {
+          wb
+            .UseStartup<Startup>();
+        });
   }
 }

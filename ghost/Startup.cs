@@ -1,7 +1,8 @@
+using System.Threading.Tasks;
 using ghost.Calls;
+using ghost.Exceptions;
 using ghost.Rockets;
 using ghost.Services;
-using ghost.Tracers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -29,9 +30,8 @@ namespace ghost
 
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddGrpc();
-
       services.Configure<KestrelServerOptions>(Configuration.GetSection("Kestrel"));
+
       services.AddLogging(x => x.AddConsole());
 
       services.AddTransient<RocketMap>();
@@ -52,30 +52,34 @@ namespace ghost
         x.Version = "0.1.0";
         x.DocumentName = "v-0-1-0";
       });
+
+      services.AddGrpc();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-      app.UseTracer();
+      app.UseExceptionMiddleware();
 
       app.UseWebSockets();
       app.MapRocketHub<CallHub>("/rocket");
+
+      app.UseOpenApi();
+      app.UseSwaggerUi3();
+      app.UseStaticFiles();
 
       app.UseAuthentication();
       app.UseRouting();
       app.UseAuthorization();
       app.UseEndpoints(endpoints =>
       {
-        endpoints.MapGrpcService<RockService>();
-
-        endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Raging Rockets!"); });
+        endpoints.MapGrpcService<RockService>(); 
+        
+        endpoints.MapGet("/", RagingRocks);
         endpoints.MapControllers();
       });
 
-      app.UseStaticFiles();
-
-      app.UseOpenApi();
-      app.UseSwaggerUi3();
     }
+
+    private static Task RagingRocks(HttpContext context) => context.Response.WriteAsync("Raging Rocks!");
   }
 }

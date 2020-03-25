@@ -5,13 +5,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
-namespace ghost.Tracers
+namespace ghost.Exceptions
 {
-  public class TracerMiddleware
+  public class ExceptionMiddleware
   {
     private readonly RequestDelegate _next;
 
-    public TracerMiddleware(RequestDelegate next)
+    public ExceptionMiddleware(RequestDelegate next)
     {
       _next = next;
     }
