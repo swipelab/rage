@@ -12,6 +12,7 @@ spec:
       labels:
         component: ghost
     spec:
+
       containers:
         - name: ghost
           image: swipelab/rage-ghost:latest
@@ -23,7 +24,7 @@ spec:
             - name: POSTGRES_DB
               value: postgres
             - name: POSTGRES_USER
-              value: postgres
+              value: postgres            
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:

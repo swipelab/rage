@@ -1,14 +1,17 @@
+using System.IO;
 using System.Threading.Tasks;
 using ghost.Calls;
 using ghost.Exceptions;
 using ghost.Rockets;
 using ghost.Services;
+using McMaster.AspNetCore.LetsEncrypt;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace ghost
@@ -30,6 +33,8 @@ namespace ghost
 
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddLetsEncrypt();
+
       services.Configure<KestrelServerOptions>(Configuration.GetSection("Kestrel"));
 
       services.AddLogging(x => x.AddConsole());
