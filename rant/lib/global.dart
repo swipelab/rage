@@ -2,13 +2,11 @@ import 'dart:async';
 
 import 'package:rant/account.dart';
 import 'package:rant/bus.dart';
-import 'package:rant/firebase.dart';
 import 'package:rant/ghost/ghost.dart';
 import 'package:rant/matrix/matrix.dart';
 import 'package:rant/settings.dart';
 import 'package:rant/util/storage.dart';
 import 'package:scoped/scoped.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 var settings = Settings.production();
 final bus = Bus();
@@ -23,9 +21,7 @@ FutureOr<Store> initStore() async {
   store.clear();
 
   store.add(bus);
-  final sharedPreferences = await SharedPreferences.getInstance();
-  store.add(sharedPreferences);
-  store.add(Firebase());
+//  store.add(Firebase());
   store.add(Storage(store));
   store.add(settings);
   store.add(Ghost(store: store, baseUrl: settings.ghost.baseUrl));

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:rant/ghost/ghost.dart';
 import 'package:rant/matrix/matrix.dart';
 import 'package:rant/matrix/matrix_room.dart';
@@ -13,19 +12,17 @@ class Account {
   Timer _timer;
 
   Account(this.store) {
-    _timer = Timer.periodic(Duration(seconds: 1), handleTimeout);
+    _timer = Timer.periodic(Duration(seconds: 5), handleTimeout);
   }
 
-  void handleTimeout(Timer timer) {  // callback function
-    count.value++;
+  void handleTimeout(Timer timer) {
+    onSync();
   }
 
   final Ref<int> count = Ref(0);
   final Ref<bool> isAuthenticated = Ref(false);
   final Ref<Profile> profile = Ref(Profile());
   final Ref<List<MatrixRoom>> rooms = Ref([]);
-
-  Ghost get _ghost => store.get<Ghost>();
 
   Matrix get _matrix => store.get<Matrix>();
 
@@ -35,8 +32,6 @@ class Account {
     try {
       final user = await _matrix.login(user: email, password: password);
       profile.value = await _matrix.getProfile(user: user.userId);
-
-      await load();
 
       isAuthenticated.value = true;
     } catch (e) {
@@ -51,9 +46,28 @@ class Account {
     isAuthenticated.value = false;
   }
 
-  Future<void> load() async {
+  Map<String, MatrixRoom> join = {};
 
-    final joinedRooms = await _matrix.getJoinedRooms();
-    rooms.value = joinedRooms.map((x) => MatrixRoom(roomId: x, store: store)..sync()).toList();
+  bool _syncing = false;
+  String _nextBatch;
+  void onSync() async {
+    if (!isAuthenticated.value || _syncing) return;
+    _syncing = true;
+
+    count.value++;
+
+    final sync = await _matrix.sync(since: _nextBatch);
+
+    sync.rooms.join.forEach((key, value) {
+      final room =
+          join.putIfAbsent(key, () => MatrixRoom(roomId: key, store: store));
+      value.state.forEach((e) => room.handleEvent(e));
+      value.timeline.events.forEach((e) => room.handleEvent(e));
+    });
+
+    rooms.value = join.values.toList();
+
+    _nextBatch = sync.nextBatch;
+    _syncing = false;
   }
 }

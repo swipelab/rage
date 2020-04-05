@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:rant/account.dart';
-import 'package:rant/firebase.dart';
-import 'package:rant/ux/google_logo.dart';
 import 'package:rant/ux/ux.dart';
 import 'package:scoped/scoped.dart';
 
 class LoginScreen extends StatelessWidget {
-  final TextEditingController emailField = TextEditingController(text: "agrapine");
-  final TextEditingController passwordField = TextEditingController(text: "TzH2O1985");
+  final TextEditingController emailField =
+      TextEditingController(text: "agrapine");
+  final TextEditingController passwordField =
+      TextEditingController(text: "TzH2O1985");
 
   Widget buildLogin(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
           color: Color(0xFF191C26),
-          boxShadow: [BoxShadow(blurRadius: 6, spreadRadius: 0, color: Colors.black26)],
+          boxShadow: [
+            BoxShadow(blurRadius: 6, spreadRadius: 0, color: Colors.black26)
+          ],
           borderRadius: BorderRadius.circular(16)),
       padding: EdgeInsets.all(16),
       child: Column(
@@ -21,37 +23,30 @@ class LoginScreen extends StatelessWidget {
           Transform.translate(offset: Offset(48, -48), child: RantHeader()),
           Transform.translate(
               offset: Offset(0, -28),
-              child: Text('RANTER', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22))),
-          context.get<Account>().count.bindValue((context, value)=> Text(value.toString())),
+              child: Text('RANTER',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22))),
+          context
+              .get<Account>()
+              .count
+              .bindValue((context, value) => Text(value.toString())),
           EmailField(controller: emailField),
           PasswordField(controller: passwordField),
           SizedBox(height: 64),
           FlatButton(
             color: Colors.red,
             padding: EdgeInsets.symmetric(horizontal: 48),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Text(
               "login",
               style: TextStyle(color: Colors.white),
             ),
-            onPressed: () => context.get<Account>().login(emailField.text, passwordField.text),
+            onPressed: () => context
+                .get<Account>()
+                .login(emailField.text, passwordField.text),
           ),
           SizedBox(height: 64),
         ],
-      ),
-    );
-  }
-
-  Widget buildGoogleSignIn(BuildContext context) {
-    return Align(
-      alignment: Alignment.center,
-      child: MaterialButton(
-        padding: EdgeInsets.all(8),
-        child: GoogleLogo(size: 24),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        color: Colors.white,
-        elevation: 3,
-        onPressed: () => context.get<Firebase>().signIn(),
       ),
     );
   }
@@ -68,9 +63,6 @@ class LoginScreen extends StatelessWidget {
               SizedBox(height: 32),
               buildLogin(context),
               SizedBox(height: 64),
-              buildGoogleSignIn(context),
-              SizedBox(height: 64),
-//              buildLogin(context),
             ],
           ),
         ),

@@ -37,7 +37,9 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
             ),
             Expanded(
-              child: Container(),
+              child: Container(
+                child: widget.room.timeline.bindValue((context, value) => Text(value.length.toString())),
+              ),
             )
           ],
         ),

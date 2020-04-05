@@ -32,7 +32,8 @@ class Matrix {
       var host = uri.host;
       var authority = uri.authority;
       var matrixPath = "_matrix/media/v1";
-      var path = uri.pathSegments?.firstWhere((element) => true, orElse: () => "");
+      var path =
+          uri.pathSegments?.firstWhere((element) => true, orElse: () => "");
 
       if (width == null || height == null) {
         return "https://$host/$matrixPath/download/$authority/$path";
@@ -56,7 +57,8 @@ class Matrix {
 
   Future<Request> _accessTokenInterceptor(Request request) async {
     if (this._accessToken == null) return request;
-    final headers = Map<String, String>.from(request.headers)..['Authorization'] = 'Bearer $_accessToken';
+    final headers = Map<String, String>.from(request.headers)
+      ..['Authorization'] = 'Bearer $_accessToken';
     return request.replace(headers: headers);
   }
 
@@ -74,8 +76,8 @@ class Matrix {
     return body;
   }
 
-  Future<MxClientGetSyncResponse> sync() async {
-    final resp = await client.getSync();
+  Future<MxClientGetSyncResponse> sync({String since}) async {
+    final resp = await client.getSync(since: since);
     return MxClientGetSyncResponse.fromJson(resp.body);
   }
 
@@ -111,7 +113,8 @@ class Matrix {
     return result;
   }
 
-  Future<MxGetRoomMessages> getRoomMessages({String roomId}) async => await _client.getRoomMessages(roomId: roomId);
+  Future<MxGetRoomMessages> getRoomMessages({String roomId}) async =>
+      await _client.getRoomMessages(roomId: roomId);
 }
 
 class MxClientLoginResponse {
@@ -123,13 +126,19 @@ class MxClientLoginResponse {
   //TODO:
   final Map<String, MxServer> wellKnown;
 
-  MxClientLoginResponse({this.accessToken, this.deviceId, this.homeServer, this.userId, this.wellKnown});
+  MxClientLoginResponse(
+      {this.accessToken,
+      this.deviceId,
+      this.homeServer,
+      this.userId,
+      this.wellKnown});
 
-  static MxClientLoginResponse fromJson(Map<String, dynamic> json) => MxClientLoginResponse(
-      accessToken: json['access_token'],
-      deviceId: json['device_id'],
-      homeServer: json['home_server'],
-      userId: json['user_id']);
+  static MxClientLoginResponse fromJson(Map<String, dynamic> json) =>
+      MxClientLoginResponse(
+          accessToken: json['access_token'],
+          deviceId: json['device_id'],
+          homeServer: json['home_server'],
+          userId: json['user_id']);
 }
 
 class MxServer {
