@@ -1,6 +1,9 @@
 import 'mx_room_previous.dart';
+import 'mx_type.dart';
 
-class MxRoomCreate {
+class MxRoomCreate with MxType {
+  String get type => 'm.room.create';
+
   final String roomVersion;
   final String creator;
   final bool federate;
@@ -14,4 +17,5 @@ class MxRoomCreate {
     federate: json['m.federate'],
     predecessor: MxRoomPrevious.fromJson(json['predecessor']),
   );
+
 }

@@ -1,6 +1,8 @@
-class MxNotice {
+import 'mx_type.dart';
+
+class MxNotice with MxType {
+  String get type => 'm.notice';
   final String body;
-  final String msgType = 'm.notice';
   final String format;
   final String formattedBody;
 

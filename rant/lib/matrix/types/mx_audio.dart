@@ -1,9 +1,11 @@
 import 'mx_encrypted_file.dart';
 import 'mx_audio_info.dart';
+import 'mx_type.dart';
 
-class MxAudio {
+class MxAudio with MxType {
+  String get type => 'm.audio';
+  
   final String body;
-  final String msgType = 'm.audio';
   final MxAudioInfo info;
   final String url;
   final MxEncryptedFile file;

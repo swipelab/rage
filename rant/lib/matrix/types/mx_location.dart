@@ -1,8 +1,9 @@
 import 'mx_location_info.dart';
+import 'mx_type.dart';
 
-class MxLocation {
+class MxLocation with MxType {
+  String get type => 'm.location';
   final String body;
-  final String msgType = 'm.location';
   final String geoUri;
   final MxLocationInfo info;
 

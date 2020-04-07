@@ -1,10 +1,12 @@
 import 'package:rant/matrix/types/mx_encrypted_file.dart';
 
 import 'mx_image_info.dart';
+import 'mx_type.dart';
 
-class MxImage {
+class MxImage with MxType {
+  String get type => 'm.image';
+  
   final String body;
-  final String msgType = 'm.image';
   final MxImageInfo info;
   final String url;
   final MxEncryptedFile file;

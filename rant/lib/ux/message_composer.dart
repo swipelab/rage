@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 
-typedef MessageCallback = void Function(String message);
+class Message {
+  final String text;
+  Message({this.text});
+}
+
+typedef MessageCallback = void Function(Message message);
 
 class MessageComposer extends StatefulWidget {
   final MessageCallback onMessage;
@@ -12,14 +17,22 @@ class MessageComposer extends StatefulWidget {
 class _MessageComposerState extends State<MessageComposer> {
   TextEditingController _inputController = TextEditingController(text: '');
 
+  void send() {
+    if (widget.onMessage != null) {
+      final text = _inputController.text;
+      final message = Message(text: text);
+      widget.onMessage(message);
+    }
+    _inputController.clear();
+  }
+
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8),
       height: 70,
-      decoration: BoxDecoration(color: Colors.transparent,
-          boxShadow: [
-            BoxShadow(blurRadius: 3, spreadRadius: 0, color: Colors.grey)
-          ]),
+      decoration: BoxDecoration(color: Colors.black, boxShadow: [
+        BoxShadow(blurRadius: 3, spreadRadius: 0, color: Colors.grey)
+      ]),
       child: Row(
         children: <Widget>[
           IconButton(
@@ -30,23 +43,16 @@ class _MessageComposerState extends State<MessageComposer> {
           ),
           Expanded(
             child: TextField(
-              textCapitalization: TextCapitalization.sentences,
-              controller: _inputController,
-              decoration:
-                  InputDecoration(border: InputBorder.none, fillColor: Colors.white)
-            ),
+                textCapitalization: TextCapitalization.sentences,
+                controller: _inputController,
+                decoration: InputDecoration(
+                    border: InputBorder.none, fillColor: Colors.white)),
           ),
           IconButton(
             icon: Icon(Icons.send),
             iconSize: 25,
             color: Theme.of(context).primaryColor,
-            onPressed: () {
-              final text = _inputController.text;
-              if (widget.onMessage != null) {
-                widget.onMessage(text);
-              }
-              _inputController.clear();
-            },
+            onPressed: send,
           )
         ],
       ),

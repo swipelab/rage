@@ -1,11 +1,11 @@
-import 'mx_content.dart';
+import 'mx_type.dart';
 import 'mx_unsigned.dart';
 
-class MxEvent {
+class MxEvent with MxType {
   final String type;
   final String eventId;
   final String sender;
-  final dynamic content;
+  final MxType content;
   final String stateKey;
   final int originServerTs;
 
@@ -34,7 +34,7 @@ class MxEvent {
           type: json['type'],
           eventId: json['event_id'],
           sender: json['sender'],
-          content: MxContent.fromJson(json['type'], json['content']),
+          content: MxType.fromJson(json['type'], json['content']),
           stateKey: json['state_key'],
           originServerTs: json['origin_server_ts'],
           age: json['age'],

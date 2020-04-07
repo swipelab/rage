@@ -1,6 +1,8 @@
-class MxText {
+import 'mx_type.dart';
+
+class MxText with MxType {
+  String get type => 'm.text';
   final String body;
-  final String msgType = 'm.text';
   final String format;
   final String formattedBody;
 

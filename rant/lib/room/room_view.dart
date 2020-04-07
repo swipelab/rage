@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:rant/matrix/matrix_room.dart';
 import 'package:rant/matrix/types/mx_event.dart';
 import 'package:rant/matrix/types/mx_text.dart';
+import 'package:rant/room/message_presenter.dart';
 import 'package:rant/ux/message_composer.dart';
-import 'package:rant/ux/paper.dart';
 import 'package:rant/ux/tile.dart';
 
 import 'package:scoped/scoped.dart';
@@ -34,8 +34,8 @@ class _RoomViewState extends State<RoomView> {
 
   @override
   Widget build(BuildContext context) {
-    return Paper(
-      child: SafeArea(
+    return Scaffold(
+      body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
@@ -54,14 +54,12 @@ class _RoomViewState extends State<RoomView> {
               ),
             ),
             Expanded(
-              child: Container(
-                child: widget.room.timeline
-                    .bindValue((context, value) => ListView.builder(
-                          itemBuilder: (context, index) =>
-                              buildPresenter(context, value[index]),
-                          itemCount: value.length,
-                        )),
-              ),
+              child: widget.room.timeline
+                  .bindValue((context, value) => ListView.builder(
+                        itemBuilder: (context, index) =>
+                            MessagePresenter(value[index]),
+                        itemCount: value.length,
+                      )),
             ),
             MessageComposer()
           ],

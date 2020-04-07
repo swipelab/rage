@@ -1,6 +1,8 @@
-class MxEmote {
+import 'mx_type.dart';
+
+class MxEmote with MxType {
+  String get type => 'm.emote';
   final String body;
-  final String msgType = 'm.emote';
   final String format;
   final String formattedBody;
 

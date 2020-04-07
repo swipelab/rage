@@ -1,6 +1,7 @@
 import 'mx_membership.dart';
+import 'mx_type.dart';
 
-class MxRoomMember {
+class MxRoomMember implements MxType {
   final String avatarUrl;
   final String displayName;
   final MxMembership membership;
@@ -12,4 +13,6 @@ class MxRoomMember {
     displayName: json['displayname'],
     membership: mxMembership(json['membership']),
   );
+
+  String get type => 'm.room.member';
 }

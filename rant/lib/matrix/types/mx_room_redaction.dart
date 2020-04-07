@@ -1,4 +1,8 @@
-class MxRoomRedaction {
+import 'mx_type.dart';
+
+class MxRoomRedaction with MxType {
+  String get type => 'm.room.redaction';
+  
   final String reason;
 
   MxRoomRedaction({this.reason});

@@ -1,10 +1,11 @@
 import 'mx_encrypted_file.dart';
+import 'mx_type.dart';
 import 'mx_video_info.dart';
 
-class MxVideo {
+class MxVideo with MxType {
+  String get type => 'm.video';
   final String body;
   final MxVideoInfo info;
-  final String msgType = 'm.video';
   final String url;
   final MxEncryptedFile file;
 

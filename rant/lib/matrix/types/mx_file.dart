@@ -1,9 +1,11 @@
 import 'mx_file_info.dart';
 import 'mx_encrypted_file.dart';
+import 'mx_type.dart';
 
-class MxFile {
+class MxFile with MxType {
+  String get type => 'm.file';
+  
   final String body;
-  final String msgType = 'm.file';
   final String filename;
   final MxFileInfo info;
   final String url;

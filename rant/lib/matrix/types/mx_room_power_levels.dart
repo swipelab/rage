@@ -1,6 +1,9 @@
 import 'mx_notification.dart';
+import 'mx_type.dart';
 
-class MxRoomPowerLevels {
+class MxRoomPowerLevels with MxType {
+  String get type => 'm.room.power_levels';
+
   final Map<String, int> users;
   final int usersDefault;
   final Map<String, int> events;
@@ -25,16 +28,17 @@ class MxRoomPowerLevels {
     this.notifications,
   });
 
-  static MxRoomPowerLevels fromJson(Map<String, dynamic> json) => MxRoomPowerLevels(
-    users: (json['users'] as Map).cast<String, int>(),
-    usersDefault: json['users_default'],
-    events: (json['events'] as Map).cast<String, int>(),
-    eventsDefault: json['events_default'],
-    stateDefault: json['state_default'],
-    ban: json['ban'],
-    kick: json['kick'],
-    redact: json['redact'],
-    invite: json['invite'],
-    notifications: MxNotification.fromJson(json['notifications']),
-  );
+  static MxRoomPowerLevels fromJson(Map<String, dynamic> json) =>
+      MxRoomPowerLevels(
+        users: (json['users'] as Map).cast<String, int>(),
+        usersDefault: json['users_default'],
+        events: (json['events'] as Map).cast<String, int>(),
+        eventsDefault: json['events_default'],
+        stateDefault: json['state_default'],
+        ban: json['ban'],
+        kick: json['kick'],
+        redact: json['redact'],
+        invite: json['invite'],
+        notifications: MxNotification.fromJson(json['notifications']),
+      );
 }

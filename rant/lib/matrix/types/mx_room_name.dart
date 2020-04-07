@@ -1,4 +1,9 @@
-class MxRoomName {
+import 'mx_type.dart';
+
+class MxRoomName with MxType {
+
+  String get type => 'm.room.name';
+  
   final String name;
 
   MxRoomName({this.name});

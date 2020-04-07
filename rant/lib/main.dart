@@ -31,6 +31,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
           fontFamily: 'SF Pro Text',
           appBarTheme: Theme.of(context).appBarTheme.copyWith(elevation: 0),
+          scaffoldBackgroundColor: Color(0xFF191C26),
         ),
         home: context.get<Account>().isAuthenticated.bindValue(
             (context, value) => WidgetSwitch(index: value ? 1 : 0, items: [
