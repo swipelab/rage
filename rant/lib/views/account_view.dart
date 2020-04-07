@@ -5,7 +5,7 @@ import 'package:rant/ux/bubble_avatar.dart';
 import 'package:rant/ux/paper.dart';
 import 'package:scoped/scoped.dart';
 
-class AccountPage extends StatelessWidget {
+class AccountView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final account = context.get<Account>();

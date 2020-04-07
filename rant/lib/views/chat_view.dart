@@ -4,14 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:rant/account.dart';
 import 'package:rant/matrix/matrix_room.dart';
-import 'package:rant/models/models.dart';
 import 'package:rant/ux/paper.dart';
 import 'package:rant/ux/tile.dart';
-import 'package:rant/views/chat_screen.dart';
 import 'package:scoped/scoped.dart';
 import 'package:rant/util/util.dart';
 
-class ChatsPage extends StatelessWidget {
+import 'room_view.dart';
+
+class ChatView extends StatelessWidget {
   Widget buildTop(BuildContext context) {
     return ClipRect(
       child: BackdropFilter(
@@ -49,7 +49,7 @@ class ChatsPage extends StatelessWidget {
     );
   }
 
-  Widget buildRoom(BuildContext context, MatrixRoom room) {
+  Widget roomTile(BuildContext context, MatrixRoom room) {
     return Tile(
         leading: room.avatarUrl.bindValue((_, v) => v == null ? Container(color: Colors.blue) : Image.network(v)),
         title: room.displayName.bindValue((_, v) => TileTitleText(v.ellipsis(20))),
@@ -57,7 +57,7 @@ class ChatsPage extends StatelessWidget {
         body: room.lastMessage.bindValue((_, v) => TileBodyText(v)),
         onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
               room.sync();
-              return ChatScreen(room: room);
+              return RoomView(room: room);
             })));
   }
 
@@ -76,7 +76,7 @@ class ChatsPage extends StatelessWidget {
                   delegate: SliverChildBuilderDelegate(
                       (context, index) => ListBody(
                             children: <Widget>[
-                              buildRoom(context, rooms[index]),
+                              roomTile(context, rooms[index]),
                               Container(
                                 margin: rooms.length == index + 1 ? null : EdgeInsets.only(left: 64),
                                 height: 1,

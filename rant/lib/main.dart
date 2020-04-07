@@ -4,9 +4,8 @@ import 'package:rant/account.dart';
 import 'package:rant/global.dart';
 import 'package:rant/util/widget_switch.dart';
 import 'package:rant/util/focus_fixer.dart';
-import 'package:rant/views/chat_screen.dart';
-import 'package:rant/views/login_screen.dart';
-import 'package:rant/views/home_screen.dart';
+import 'package:rant/views/login_view.dart';
+import 'package:rant/views/home_view.dart';
 import 'package:scoped/scoped.dart';
 
 void main() async {
@@ -25,25 +24,19 @@ class MyApp extends StatelessWidget {
         title: 'RANTER',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primaryColor: Colors.red,
-          primaryColorDark: Colors.red,
-          primaryColorLight: Colors.red,
+          primaryColor: Colors.white,
+          primaryColorDark: Colors.white,
+          primaryColorLight: Colors.black,
           accentColor: Color(0xFFFFF9EB),
           brightness: Brightness.dark,
           fontFamily: 'SF Pro Text',
           appBarTheme: Theme.of(context).appBarTheme.copyWith(elevation: 0),
         ),
-        routes: {
-          '/': (_) => FluidBuilder<Ref<bool>>(
-                fluid: Scope.get<Account>(context).isAuthenticated,
-                builder: (context, s) => WidgetSwitch(index: s.value ? 1 : 0, items: [
-                  (context) => LoginScreen(),
-                  (context) => HomeScreen()
-                ]),
-              ),
-          '/chats/:chatId': (_) => ChatScreen()
-        },
-        initialRoute: '/',
+        home: context.get<Account>().isAuthenticated.bindValue(
+            (context, value) => WidgetSwitch(index: value ? 1 : 0, items: [
+                  (context) => LoginView(),
+                  (context) => HomeView(),
+                ])),
       ),
     );
   }

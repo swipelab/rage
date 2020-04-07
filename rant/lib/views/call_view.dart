@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/webrtc.dart';
 
-class CallScreen extends StatelessWidget {
+class CallView extends StatelessWidget {
   final RTCVideoRenderer local;
   final RTCVideoRenderer remote;
   final VoidCallback onSwitchCamera;
   final VoidCallback onHangUp;
   final VoidCallback onToggleMic;
 
-  CallScreen({this.local, this.remote, this.onToggleMic, this.onHangUp, this.onSwitchCamera});
+  CallView({this.local, this.remote, this.onToggleMic, this.onHangUp, this.onSwitchCamera});
 
   @override
   Widget build(BuildContext context) {

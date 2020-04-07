@@ -16,14 +16,14 @@ class _MessageComposerState extends State<MessageComposer> {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8),
       height: 70,
-      decoration: BoxDecoration(color: Colors.white,
+      decoration: BoxDecoration(color: Colors.transparent,
           boxShadow: [
             BoxShadow(blurRadius: 3, spreadRadius: 0, color: Colors.grey)
           ]),
       child: Row(
         children: <Widget>[
           IconButton(
-            icon: Icon(Icons.photo),
+            icon: Icon(Icons.add),
             iconSize: 25,
             color: Theme.of(context).primaryColor,
             onPressed: () {},
@@ -33,7 +33,7 @@ class _MessageComposerState extends State<MessageComposer> {
               textCapitalization: TextCapitalization.sentences,
               controller: _inputController,
               decoration:
-                  InputDecoration.collapsed(hintText: 'Send a message...'),
+                  InputDecoration(border: InputBorder.none, fillColor: Colors.white)
             ),
           ),
           IconButton(

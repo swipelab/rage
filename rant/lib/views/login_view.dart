@@ -3,7 +3,7 @@ import 'package:rant/account.dart';
 import 'package:rant/ux/ux.dart';
 import 'package:scoped/scoped.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginView extends StatelessWidget {
   final TextEditingController emailField =
       TextEditingController(text: "agrapine");
   final TextEditingController passwordField =

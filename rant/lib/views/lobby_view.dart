@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/webrtc.dart';
 import 'package:rant/experimental/signal.dart';
 import 'package:rant/ux/paper.dart';
-import 'package:rant/views/call_screen.dart';
 
-class LobbyPage extends StatefulWidget {
+import 'call_view.dart';
+
+class LobbyView extends StatefulWidget {
   final String rocketUrl;
 
-  LobbyPage({@required this.rocketUrl});
+  LobbyView({@required this.rocketUrl});
 
-  _LobbyPageState createState() => _LobbyPageState();
+  _LobbyViewState createState() => _LobbyViewState();
 }
 
-class _LobbyPageState extends State<LobbyPage> {
+class _LobbyViewState extends State<LobbyView> {
   Call _signal;
   List<dynamic> _peers;
   String _selfId;
@@ -138,7 +139,7 @@ class _LobbyPageState extends State<LobbyPage> {
 
   Widget build(BuildContext context) {
     return _inCalling == true
-        ? CallScreen(
+        ? CallView(
             local: _localRenderer,
             remote: _remoteRenderer,
             onHangUp: _hangUp,
