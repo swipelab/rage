@@ -1,4 +1,3 @@
-import 'package:rant/matrix/types/mx_text.dart';
 import 'package:scoped/scoped.dart';
 
 import 'matrix.dart';
@@ -34,20 +33,12 @@ class MatrixRoom {
 
   Ref<List<MxEvent>> messages = Ref([]);
 
-  Future sync() async {
-    displayName.value = roomId;
-    var states = await matrix.client.getRoomState(roomId: roomId);
-
-    states.forEach(handleEvent);
-
-    _update();
-
-  }
-
   _update() {
     _updateDisplayName();
     _updateAvatarUrl();
   }
+
+  Set<String> _timelineEvents = {'m.text', 'm.image'};
 
   handleEvent(MxEvent e) {
     if (e.content is MxRoomName) {
@@ -62,7 +53,7 @@ class MatrixRoom {
     } else if (e.content is MxRoomMember) {
       _members[e.stateKey] = e.content;
       _update();
-    } else if(e.content is MxText) {
+    } else if(_timelineEvents.contains(e.content.type)) {
       timeline.value.add(e);
       timeline.notify();
     }
@@ -75,5 +66,13 @@ class MatrixRoom {
 
   _updateAvatarUrl() {
     avatarUrl.value = Matrix.mxcToUrl(_avatar?.url);
+  }
+
+  Ref<int> workers = Ref(0);
+
+  Future<void> sendMessage({String body}) async {
+    workers.value++;
+    await matrix.putRoomMessage(roomId: roomId, body: body);
+    workers.value--;
   }
 }

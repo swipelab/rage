@@ -27,7 +27,10 @@ class ChatView extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     'Chats',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
                   Expanded(child: Container()),
                   IconButton(
@@ -50,14 +53,14 @@ class ChatView extends StatelessWidget {
 
   Widget buildRoom(BuildContext context, MatrixRoom room) {
     return Tile(
-        leading: room.avatarUrl.bindValue((_, v) => v == null ? Container(color: Colors.blue) : Image.network(v)),
-        title: room.displayName.bindValue((_, v) => TileTitleText(v.ellipsis(20))),
+        leading: room.avatarUrl.bindValue((_, v) =>
+            v == null ? Container(color: Colors.blue) : Image.network(v)),
+        title:
+            room.displayName.bindValue((_, v) => TileTitleText(v.ellipsis(20))),
         stamp: room.lastSeen.bindValue((_, v) => TileStampText(v)),
         body: room.lastMessage.bindValue((_, v) => TileBodyText(v)),
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-              room.sync();
-              return RoomView(room: room);
-            })));
+        onTap: () => Navigator.of(context)
+            .push(MaterialPageRoute(builder: (_) => RoomView(room: room))));
   }
 
   Widget build(BuildContext context) {
@@ -71,20 +74,26 @@ class ChatView extends StatelessWidget {
                   SizedBox(height: 96),
                 ]),
               ),
-              context.get<Account>().rooms.bindValue((context, rooms) => SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                      (context, index) => ListBody(
-                            children: <Widget>[
-                              buildRoom(context, rooms[index]),
-                              Container(
-                                margin: rooms.length == index + 1 ? null : EdgeInsets.only(left: 64),
-                                height: 1,
-                                color: Colors.black.withOpacity(0.1),
+              context
+                  .get<Account>()
+                  .rooms
+                  .bindValue((context, rooms) => SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                          (context, index) => ListBody(
+                                children: <Widget>[
+                                  buildRoom(context, rooms[index]),
+                                  Container(
+                                    margin: rooms.length == index + 1
+                                        ? null
+                                        : EdgeInsets.only(left: 64),
+                                    height: 1,
+                                    color: Colors.black.withOpacity(0.1),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                      childCount: rooms.length))),
-              SliverList(delegate: SliverChildListDelegate([Container(height: 666)])),
+                          childCount: rooms.length))),
+              SliverList(
+                  delegate: SliverChildListDelegate([Container(height: 666)])),
 //              SliverFillRemaining(
 //                child: Container(height: 200),
 //              ),

@@ -8,13 +8,6 @@ class TextPresenter extends StatelessWidget {
   TextPresenter(MxEvent event) : text = event.content as MxText;
 
   Widget build(BuildContext context) {
-    return Container(
-      child: Text(text.body),
-      decoration: BoxDecoration(
-        //color: Colors.blue,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      padding: EdgeInsets.only(top: 8, bottom: 8, left: 12, right: 12),
-    );
+    return Text(text.body);
   }
 }

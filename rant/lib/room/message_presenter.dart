@@ -3,16 +3,26 @@ import 'package:rant/matrix/types/mx_event.dart';
 import 'package:rant/room/fallback_presenter.dart';
 import 'package:rant/room/text_presenter.dart';
 
-typedef Widget MessagePresenterBuilder(BuildContext context, MxEvent event);
+import 'image_presenter.dart';
+
+typedef Widget ContentPresenterBuilder(BuildContext context, MxEvent event);
 
 class MessagePresenter extends StatelessWidget {
-  static Map<String, MessagePresenterBuilder> _presenters = {
-    'm.text': (c, e) => TextPresenter(e)
+  static Map<String, ContentPresenterBuilder> _presenters = {
+    'm.text': (c, e) => TextPresenter(e),
+    'm.image': (c, e) => ImagePresenter(e),
   };
 
   final MxEvent event;
-  final MessagePresenterBuilder _builder;
-  MessagePresenter(this.event):_builder = _presenters.putIfAbsent(event.content.type, () => (_,e) => FallbackPresenter(e));
-  
-  Widget build(BuildContext context) => _builder(context, event);
+  final ContentPresenterBuilder _contentBuilder;
+  MessagePresenter(this.event)
+      : _contentBuilder = _presenters.putIfAbsent(
+            event.content.type, () => (_, e) => FallbackPresenter(e));
+
+  Widget build(BuildContext context) {
+    return Container(
+      child: _contentBuilder(context, event),
+      padding: EdgeInsets.all(8),
+    );
+  }
 }

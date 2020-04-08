@@ -53,12 +53,12 @@ class Call {
     ]
   };
 
-  Map<String, dynamic> _call_constraints = {
+  Map<String, dynamic> _callConstraints = {
     'mandatory': {'OfferToReceiveAudio': true, 'OfferToReceiveVideo': true},
     'optional': []
   };
 
-  Map<String, dynamic> _data_constraints = {
+  Map<String, dynamic> _dataConstraints = {
     'mandatory': {'OfferToReceiveAudio': false, 'OfferToReceiveVideo': false},
     'optional': []
   };
@@ -312,7 +312,7 @@ class Call {
   _createOffer(String id, RTCPeerConnection pc, String media) async {
     try {
       RTCSessionDescription s = await pc
-          .createOffer(media == 'data' ? _data_constraints : _call_constraints);
+          .createOffer(media == 'data' ? _dataConstraints : _callConstraints);
       pc.setLocalDescription(s);
       _send('offer', {
         'to': id,
@@ -328,7 +328,7 @@ class Call {
   _createAnswer(String id, RTCPeerConnection pc, String media) async {
     try {
       RTCSessionDescription s = await pc.createAnswer(
-          media == 'data' ? _data_constraints : _call_constraints);
+          media == 'data' ? _dataConstraints : _callConstraints);
       pc.setLocalDescription(s);
       _send('answer', {
         'to': id,

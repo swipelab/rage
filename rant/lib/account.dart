@@ -4,7 +4,6 @@ import 'package:rant/matrix/matrix_room.dart';
 import 'package:rant/models/models.dart';
 import 'package:scoped/scoped.dart';
 
-import 'util/util.dart';
 import 'dart:async';
 
 class Account {
@@ -56,18 +55,22 @@ class Account {
 
     count.value++;
 
-    final sync = await _matrix.sync(since: _nextBatch);
+    try {
+      final sync = await _matrix.sync(since: _nextBatch);
 
-    sync.rooms.join.forEach((key, value) {
-      final room =
-          join.putIfAbsent(key, () => MatrixRoom(roomId: key, store: store));
-      value.state.forEach((e) => room.handleEvent(e));
-      value.timeline.events.forEach((e) => room.handleEvent(e));
-    });
+      sync.rooms.join.forEach((key, value) {
+        final room =
+            join.putIfAbsent(key, () => MatrixRoom(roomId: key, store: store));
+        value.state.forEach((e) => room.handleEvent(e));
+        value.timeline.events.forEach((e) => room.handleEvent(e));
+      });
 
-    rooms.value = join.values.toList();
+      rooms.value = join.values.toList();
+      _nextBatch = sync.nextBatch;
+    } catch (e) {
+      print(e);
+    }
 
-    _nextBatch = sync.nextBatch;
     _syncing = false;
   }
 }

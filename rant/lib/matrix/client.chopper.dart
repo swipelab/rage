@@ -137,21 +137,21 @@ class _$Client extends Client {
   }
 
   @override
-  Future<Response> putRoomStateEvent(
+  Future<Response<Map<String, dynamic>>> putRoomStateEvent(
       {String roomId, String eventType, String stateKey, dynamic body}) {
     final $url = '_matrix/client/r0/rooms/$roomId/state/$eventType/$stateKey';
     final $body = body;
     final $request = Request('PUT', $url, client.baseUrl, body: $body);
-    return client.send<dynamic, dynamic>($request);
+    return client.send<Map<String, dynamic>, Map<String, dynamic>>($request);
   }
 
   @override
-  Future<Response> putRoomEvent(
+  Future<Response<Map<String, dynamic>>> putRoomEvent(
       {String roomId, dynamic eventType, String txnId, dynamic body}) {
     final $url = '_matrix/client/r0/rooms/$roomId/send/$eventType/$txnId';
     final $body = body;
     final $request = Request('PUT', $url, client.baseUrl, body: $body);
-    return client.send<dynamic, dynamic>($request);
+    return client.send<Map<String, dynamic>, Map<String, dynamic>>($request);
   }
 
   @override

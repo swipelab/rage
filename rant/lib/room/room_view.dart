@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:rant/matrix/matrix_room.dart';
-import 'package:rant/matrix/types/mx_event.dart';
-import 'package:rant/matrix/types/mx_text.dart';
 import 'package:rant/room/message_presenter.dart';
 import 'package:rant/ux/message_composer.dart';
 import 'package:rant/ux/tile.dart';
@@ -19,19 +17,6 @@ class RoomView extends StatefulWidget {
 }
 
 class _RoomViewState extends State<RoomView> {
-  Widget mxText(MxEvent e) {
-    final text = e.content as MxText;
-    return Text(text.body);
-  }
-
-  Widget buildPresenter(BuildContext context, MxEvent e) {
-    if (e.content is MxText) {
-      return mxText(e);
-    } else {
-      return Text('uknown');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +38,7 @@ class _RoomViewState extends State<RoomView> {
                 ],
               ),
             ),
+            widget.room.workers.bindValue((context, value)=> Text('Workers : $value')),
             Expanded(
               child: widget.room.timeline
                   .bindValue((context, value) => ListView.builder(
@@ -61,7 +47,9 @@ class _RoomViewState extends State<RoomView> {
                         itemCount: value.length,
                       )),
             ),
-            MessageComposer()
+            MessageComposer(
+                onMessage: (message) =>
+                    widget.room.sendMessage(body: message.body))
           ],
         ),
       ),

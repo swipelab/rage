@@ -115,7 +115,7 @@ abstract class Client extends ChopperService {
           .body);
 
   @Put(path: 'rooms/{roomId}/state/{eventType}/{stateKey}')
-  Future<Response> putRoomStateEvent({
+  Future<Response<Map<String, dynamic>>> putRoomStateEvent({
     @Path() String roomId,
     @Path() String eventType,
     @Path() String stateKey,
@@ -123,7 +123,7 @@ abstract class Client extends ChopperService {
   });
 
   @Put(path: 'rooms/{roomId}/send/{eventType}/{txnId}')
-  Future<Response> putRoomEvent({
+  Future<Response<Map<String, dynamic>>> putRoomEvent({
     @Path() String roomId,
     @Path() eventType,
     @Path() String txnId,

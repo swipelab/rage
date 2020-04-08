@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Message {
-  final String text;
-  Message({this.text});
+  final String body;
+  Message({this.body});
 }
 
 typedef MessageCallback = void Function(Message message);
@@ -19,8 +19,8 @@ class _MessageComposerState extends State<MessageComposer> {
 
   void send() {
     if (widget.onMessage != null) {
-      final text = _inputController.text;
-      final message = Message(text: text);
+      final body = _inputController.text;
+      final message = Message(body: body);
       widget.onMessage(message);
     }
     _inputController.clear();

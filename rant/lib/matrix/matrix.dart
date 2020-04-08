@@ -1,15 +1,17 @@
 library matrix;
 
-import 'package:rant/matrix/responses/mx_client_get_sync_response.dart';
-import 'package:rant/matrix/types/mx_get_room_messages.dart';
-
-import 'client.dart';
-
 import 'package:chopper/chopper.dart';
+import 'package:rant/matrix/types/mx_get_room_messages.dart';
+import 'package:rant/matrix/types/mx_text.dart';
 import 'package:rant/models/models.dart';
+import 'package:rant/sx.dart';
+import 'package:rant/util/util.dart';
 import 'package:scoped/scoped.dart';
 
-import 'types/mx_event.dart';
+import 'client.dart';
+import 'responses/mx_client_get_sync_response.dart';
+import 'responses/mx_client_login_response.dart';
+import 'responses/mx_client_put_room_event_response.dart';
 
 class Matrix {
   final Store store;
@@ -24,27 +26,6 @@ class Matrix {
 
   Client get client => _client;
 
-  static String mxcToUrl(String url, {int width, int height}) {
-    if (url?.isNotEmpty != true) return null;
-
-    Uri uri = Uri.tryParse(url);
-    if (uri != null && uri.isScheme("mxc")) {
-      var host = uri.host;
-      var authority = uri.authority;
-      var matrixPath = "_matrix/media/v1";
-      var path =
-          uri.pathSegments?.firstWhere((element) => true, orElse: () => "");
-
-      if (width == null || height == null) {
-        return "https://$host/$matrixPath/download/$authority/$path";
-      } else {
-        return "https://$host/$matrixPath/thumbnail/$authority/$path?width=$width&height=$height";
-      }
-    }
-
-    return uri?.toString();
-  }
-
   Matrix({this.store, this.baseUrl}) {
     _client = Client.create(ChopperClient(
         baseUrl: baseUrl,
@@ -58,7 +39,8 @@ class Matrix {
   Future<Request> _accessTokenInterceptor(Request request) async {
     if (this._accessToken == null) return request;
     final headers = Map<String, String>.from(request.headers)
-      ..['Authorization'] = 'Bearer $_accessToken';
+      ..['Authorization'] = 'Bearer $_accessToken'
+      ..['Content-Type'] = 'application/json';
     return request.replace(headers: headers);
   }
 
@@ -66,7 +48,7 @@ class Matrix {
     final body = MxClientLoginResponse(
       userId: '@agrapine:matrix.org',
       accessToken:
-          'MDAxOGxvY2F0aW9uIG1hdHJpeC5vcmcKMDAxM2lkZW50aWZpZXIga2V5CjAwMTBjaWQgZ2VuID0gMQowMDI3Y2lkIHVzZXJfaWQgPSBAYWdyYXBpbmU6bWF0cml4Lm9yZwowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IDl3enk5O0hVQ2hnfkxtc2YKMDAyZnNpZ25hdHVyZSDT77vC1YQ1KUYWE-BCRBn8PgNjG-RRUNVjxO1ZpT_sGgo',
+          'MDAxOGxvY2F0aW9uIG1hdHJpeC5vcmcKMDAxM2lkZW50aWZpZXIga2V5CjAwMTBjaWQgZ2VuID0gMQowMDI3Y2lkIHVzZXJfaWQgPSBAYWdyYXBpbmU6bWF0cml4Lm9yZwowMDE2Y2lkIHR5cGUgPSBhY2Nlc3MKMDAyMWNpZCBub25jZSA9IG1PQU44dyxsMn44Uz02cmMKMDAyZnNpZ25hdHVyZSAmocz0mwdVfjbOjhlzds53-HzUCxe7nuBjmEjFnzXSCwo',
     );
 
 //    final resp = await _client.login(body: {"type": "m.login.password", "user": user, "password": password});
@@ -74,6 +56,32 @@ class Matrix {
     _accessToken = body.accessToken;
     _self = body.userId;
     return body;
+  }
+
+  Future<MxClientPutRoomEventResponse> putRoomMessage(
+      {String roomId, String body}) async {
+    final content = MxText(body: body);
+    return await putRoomEvent(
+        roomId: roomId,
+        eventType: 'm.room.message',
+        txnId: Id.newId(),
+        body: content.toJson());
+  }
+
+  Future<MxClientPutRoomEventResponse> putRoomEvent({
+    String roomId,
+    String eventType,
+    dynamic body,
+    String txnId,
+  }) async {
+    try {
+      final resp = await client.putRoomEvent(
+          roomId: roomId, eventType: eventType, txnId: txnId, body: body);
+      return MxClientPutRoomEventResponse.fromJson(resp.body);
+    } on Exception catch (e) {
+      print(e);
+      return null;
+    }
   }
 
   Future<MxClientGetSyncResponse> sync({String since}) async {
@@ -103,7 +111,7 @@ class Matrix {
     final resp = await _client.getProfile(user);
     return Profile(
       alias: resp.body['displayname'],
-      avatar: mxcToUrl(resp.body['avatar_url']),
+      avatar: Matrix.mxcToUrl(resp.body['avatar_url']),
     );
   }
 
@@ -115,34 +123,25 @@ class Matrix {
 
   Future<MxGetRoomMessages> getRoomMessages({String roomId}) async =>
       await _client.getRoomMessages(roomId: roomId);
-}
 
-class MxClientLoginResponse {
-  final String accessToken;
-  final String deviceId;
-  final String homeServer;
-  final String userId;
+  static String mxcToUrl(String url, {int width, int height}) {
+    if (url?.isNotEmpty != true) return null;
 
-  //TODO:
-  final Map<String, MxServer> wellKnown;
+    Uri uri = Uri.tryParse(url);
+    if (uri != null && uri.isScheme("mxc")) {
+      var host = uri.host;
+      var authority = uri.authority;
+      var matrixPath = "_matrix/media/v1";
+      var path =
+          uri.pathSegments?.firstWhere((element) => true, orElse: () => "");
 
-  MxClientLoginResponse(
-      {this.accessToken,
-      this.deviceId,
-      this.homeServer,
-      this.userId,
-      this.wellKnown});
+      if (width == null || height == null) {
+        return "https://$host/$matrixPath/download/$authority/$path";
+      } else {
+        return "https://$host/$matrixPath/thumbnail/$authority/$path?width=$width&height=$height";
+      }
+    }
 
-  static MxClientLoginResponse fromJson(Map<String, dynamic> json) =>
-      MxClientLoginResponse(
-          accessToken: json['access_token'],
-          deviceId: json['device_id'],
-          homeServer: json['home_server'],
-          userId: json['user_id']);
-}
-
-class MxServer {
-  final String baseUrl;
-
-  MxServer({this.baseUrl});
+    return uri?.toString();
+  }
 }
