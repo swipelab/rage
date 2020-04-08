@@ -12,9 +12,9 @@ class LoginView extends StatelessWidget {
   Widget buildLogin(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color: Color(0xFF191C26),
+          color: Colors.white,// Color(0xFF191C26),
           boxShadow: [
-            BoxShadow(blurRadius: 6, spreadRadius: 0, color: Colors.black26)
+            BoxShadow(blurRadius: 6, spreadRadius: 6, color: Colors.black12)
           ],
           borderRadius: BorderRadius.circular(16)),
       padding: EdgeInsets.all(16),
@@ -25,10 +25,6 @@ class LoginView extends StatelessWidget {
               offset: Offset(0, -28),
               child: Text('RANTER',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22))),
-          context
-              .get<Account>()
-              .count
-              .bindValue((context, value) => Text(value.toString())),
           EmailField(controller: emailField),
           PasswordField(controller: passwordField),
           SizedBox(height: 64),
@@ -38,7 +34,7 @@ class LoginView extends StatelessWidget {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             child: Text(
-              "login",
+              "LOGIN",
               style: TextStyle(color: Colors.white),
             ),
             onPressed: () => context
@@ -55,6 +51,7 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        decoration: BoxDecoration(color: Color(0xFFFFFFFF)),
         child: CustomPaint(
           painter: LoginCanvasPainter(),
           child: ListView(
@@ -87,12 +84,12 @@ class LoginCanvasPainter extends CustomPainter {
         path,
         Paint()
           ..color = Colors.black.withAlpha(60)
-          ..maskFilter = MaskFilter.blur(BlurStyle.normal, 3 * 0.57735 + 0.5));
+          ..maskFilter = MaskFilter.blur(BlurStyle.normal, 20));
 
     canvas.drawPath(
         path,
         Paint()
-          ..color = Colors.red
+          ..color = Colors.white
           ..style = PaintingStyle.fill);
   }
 

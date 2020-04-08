@@ -5,6 +5,6 @@ class Paper extends StatelessWidget {
 
   Paper({this.child});
 
-  Widget build(BuildContext context) => Material(child: child, color: Color(0xFF191C26));
+  Widget build(BuildContext context) => Material(child: child, color: Color(0xFFFFFF));
 }
 

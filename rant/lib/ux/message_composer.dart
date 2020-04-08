@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Message {
   final String body;
+
   Message({this.body});
 }
 
@@ -9,6 +10,7 @@ typedef MessageCallback = void Function(Message message);
 
 class MessageComposer extends StatefulWidget {
   final MessageCallback onMessage;
+
   MessageComposer({this.onMessage});
 
   _MessageComposerState createState() => _MessageComposerState();
@@ -28,16 +30,14 @@ class _MessageComposerState extends State<MessageComposer> {
 
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      height: 70,
-      decoration: BoxDecoration(color: Colors.black, boxShadow: [
-        BoxShadow(blurRadius: 3, spreadRadius: 0, color: Colors.grey)
-      ]),
+      height: 48,
+      decoration: BoxDecoration(),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           IconButton(
             icon: Icon(Icons.add),
-            iconSize: 25,
+            iconSize: 24,
             color: Theme.of(context).primaryColor,
             onPressed: () {},
           ),
@@ -50,7 +50,7 @@ class _MessageComposerState extends State<MessageComposer> {
           ),
           IconButton(
             icon: Icon(Icons.send),
-            iconSize: 25,
+            iconSize: 24,
             color: Theme.of(context).primaryColor,
             onPressed: send,
           )

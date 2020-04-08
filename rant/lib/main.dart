@@ -24,14 +24,17 @@ class MyApp extends StatelessWidget {
         title: 'RANTER',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primaryColor: Colors.white,
-          primaryColorDark: Colors.white,
+          primaryColor: Colors.black,
+          primaryColorDark: Colors.black,
           primaryColorLight: Colors.black,
           accentColor: Color(0xFFFFF9EB),
-          brightness: Brightness.dark,
+          brightness: Brightness.light,
           fontFamily: 'SF Pro Text',
-          appBarTheme: Theme.of(context).appBarTheme.copyWith(elevation: 0),
-          scaffoldBackgroundColor: Color(0xFF191C26),
+          appBarTheme: Theme.of(context).appBarTheme.copyWith(
+                elevation: 0,
+                color: Colors.black54,
+              ),
+          //scaffoldBackgroundColor: Color(0xFF191C26),
         ),
         home: context.get<Account>().isAuthenticated.bindValue(
             (context, value) => WidgetSwitch(index: value ? 1 : 0, items: [

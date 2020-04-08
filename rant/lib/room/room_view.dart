@@ -25,7 +25,7 @@ class _RoomViewState extends State<RoomView> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
-              color: Colors.black.withOpacity(0.3),
+              //color: Colors.black.withOpacity(0.3),
               padding: EdgeInsets.only(left: 12, top: 8, bottom: 8),
               child: Row(
                 children: <Widget>[
@@ -38,18 +38,22 @@ class _RoomViewState extends State<RoomView> {
                 ],
               ),
             ),
-            widget.room.workers.bindValue((context, value)=> Text('Workers : $value')),
+            widget.room.workers
+                .bindValue((context, value) => Text('Workers : $value')),
             Expanded(
               child: widget.room.timeline
                   .bindValue((context, value) => ListView.builder(
+                        reverse: true,
                         itemBuilder: (context, index) =>
                             MessagePresenter(value[index]),
                         itemCount: value.length,
                       )),
             ),
+            Divider(height: 1),
             MessageComposer(
                 onMessage: (message) =>
-                    widget.room.sendMessage(body: message.body))
+                    widget.room.sendMessage(body: message.body)),
+            Divider(height: 1),
           ],
         ),
       ),

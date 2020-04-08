@@ -54,7 +54,7 @@ class MatrixRoom {
       _members[e.stateKey] = e.content;
       _update();
     } else if(_timelineEvents.contains(e.content.type)) {
-      timeline.value.add(e);
+      timeline.value.insert(0, e);
       timeline.notify();
     }
   }
