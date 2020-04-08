@@ -10,10 +10,9 @@ class AccountView extends StatelessWidget {
   Widget build(BuildContext context) {
     final account = context.get<Account>();
     return Page(
-      top: AppBar(title: Text('ACCOUNT')),
-      slivers: [
-        SliverList(
-            delegate: SliverChildListDelegate([
+        top: AppBar(title: Text('ACCOUNT')),
+        child: ListView(children: [
+          SizedBox(height: 96),
           Container(
               padding: EdgeInsets.only(top: 24, bottom: 24),
               child: account.profile.bindValue((context, s) =>
@@ -30,9 +29,8 @@ class AccountView extends StatelessWidget {
           ListTile(
             title: Text('Logout'),
             onTap: () => account.logout(),
-          )
-        ]))
-      ],
-    );
+          ),
+          SizedBox(height: 666),
+        ]));
   }
 }

@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:rant/account.dart';
 import 'package:rant/matrix/matrix_room.dart';
 import 'package:rant/room/room_view.dart';
-import 'package:rant/ux/page.dart';
+import 'package:rant/ux/sliver_page.dart';
 import 'package:rant/ux/paper.dart';
 import 'package:rant/ux/tile.dart';
 import 'package:scoped/scoped.dart';
@@ -47,7 +47,7 @@ class ChatView extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
-    return Page(
+    return SliverPage(
       top: AppBar(
         title: Text('CHATS'),
         actions: [

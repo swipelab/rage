@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 
 import 'paper.dart';
 
-class Page extends StatelessWidget {
+class SliverPage extends StatelessWidget {
   final Widget top;
+  final Widget bottom;
+
   final List<Widget> slivers;
   final EdgeInsets padding;
 
-  Page(
+  SliverPage(
       {this.top,
+      this.bottom,
       this.slivers,
       this.padding = const EdgeInsets.only(top: 96, bottom: 666)});
 
@@ -24,8 +27,8 @@ class Page extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
-    return Paper(
-        child: Stack(
+    return Scaffold(
+        body: Stack(
       children: [
         CustomScrollView(
           slivers: []
@@ -33,7 +36,10 @@ class Page extends StatelessWidget {
             ..addAll(slivers)
             ..add(sizedSliver(height: padding.bottom)),
         ),
-        Positioned(top: 0, left: 0, right: 0, child: blurred(top)),
+        if (top != null)
+          Positioned(top: 0, left: 0, right: 0, child: blurred(top)),
+        if (bottom != null)
+          Positioned(bottom: 0, left: 0, right: 0, child: blurred(bottom)),
       ],
     ));
   }
