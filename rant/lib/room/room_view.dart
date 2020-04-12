@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:rant/matrix/matrix.dart';
 import 'package:rant/matrix/matrix_room.dart';
+import 'package:rant/matrix/types/mx_event.dart';
 import 'package:rant/room/message_presenter.dart';
 import 'package:rant/ux/message_composer.dart';
 import 'package:rant/ux/page.dart';
@@ -17,11 +20,46 @@ class RoomView extends StatefulWidget {
   _RoomViewState createState() => _RoomViewState();
 }
 
+class EventPresenter extends StatelessWidget {
+  final MatrixRoom room;
+  final MxEvent event;
+  final String sender;
+
+  EventPresenter(this.room, this.event) : sender = event.sender;
+
+  Widget build(BuildContext context) {
+    final mxc = room.members[sender]?.avatarUrl;
+
+    return Row(
+      children: [
+        mxc == null
+            ? Container(
+                width: 48,
+                height: 48,
+                color: Colors.grey,
+              )
+            : CircleAvatar(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(24),
+                child: Image.network(
+                    Matrix.mxcToUrl(room.members[sender]?.avatarUrl),
+                    width: 48,
+                    height: 48, fit: BoxFit.cover,
+                  ),
+              ),
+            ),
+        Expanded(child: MessagePresenter(event))
+      ],
+    );
+  }
+}
+
 class _RoomViewState extends State<RoomView> {
   Widget buildTimeline(BuildContext context, MatrixRoom room) {
     return room.timeline.bindValue((context, timeline) => ListView.builder(
           padding: EdgeInsets.only(top: 96),
-          itemBuilder: (context, index) => MessagePresenter(timeline[index]),
+          itemBuilder: (context, index) =>
+              EventPresenter(room, timeline[index]),
           itemCount: timeline.length,
           reverse: true,
         ));
