@@ -1,3 +1,4 @@
+import 'package:rant/matrix/types/mx_dir.dart';
 import 'package:rant/matrix/types/mx_image.dart';
 import 'package:rant/matrix/types/mx_text.dart';
 import 'package:rant/matrix/types/mx_video.dart';
@@ -20,6 +21,10 @@ class MatrixRoom {
 
   final Ref<List<MxEvent>> timeline = Ref([]);
 
+  final Ref<String> start;
+  final Ref<String> end;
+  final Ref<bool> sinceCreation = Ref(false);
+
   MxRoomName _name;
   MxRoomCanonicalAlias _canonical;
   MxRoomAvatar _avatar;
@@ -32,7 +37,10 @@ class MatrixRoom {
   final Store store;
   final Matrix matrix;
 
-  MatrixRoom({this.store, this.roomId}) : matrix = store.get<Matrix>();
+  MatrixRoom({this.store, this.roomId, String start, String end})
+      : matrix = store.get<Matrix>(),
+        start = Ref(start),
+        end = Ref(end);
 
   Ref<List<MxEvent>> messages = Ref([]);
 
@@ -41,9 +49,7 @@ class MatrixRoom {
     _updateAvatarUrl();
   }
 
-  Set<String> _timelineEvents = {'m.text', 'm.image'};
-
-  handleEvent(MxEvent e) {
+  handleEvent(MxEvent e, {MxDir dir = MxDir.f}) {
     if (e.content is MxRoomName) {
       _name = e.content;
       _update();
@@ -57,10 +63,12 @@ class MatrixRoom {
       members[e.stateKey] = e.content;
       _update();
     } else if (e.content is MxText || e.content is MxImage) {
-      timeline.value.insert(0, e);
+      if (dir == MxDir.f) {
+        timeline.value.insert(0, e);
+      } else {
+        timeline.value.add(e);
+      }
       timeline.notify();
-    } else if (e.content == null){
-      print(e);
     }
   }
 
@@ -78,6 +86,29 @@ class MatrixRoom {
   Future<void> sendMessage({String body}) async {
     workers.value++;
     await matrix.putRoomMessage(roomId: roomId, body: body);
+    workers.value--;
+  }
+
+  bool _loading = false;
+
+  Future<void> loadMore() async {
+    if (sinceCreation.value) return;
+
+    if (_loading) return;
+    _loading = true;
+
+    workers.value++;
+    final slice = await matrix.client
+        .getRoomMessages(roomId: roomId, dir: MxDir.b, from: start.value);
+
+    slice.chunk.forEach((e) => handleEvent(e, dir: MxDir.b));
+
+    start.value = slice.end;
+
+    if (slice.end == slice.start) sinceCreation.value = true;
+
+    _loading = false;
+
     workers.value--;
   }
 }

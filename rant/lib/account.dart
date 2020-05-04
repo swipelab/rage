@@ -60,7 +60,7 @@ class Account {
 
       sync.rooms.join.forEach((key, value) {
         final room =
-            join.putIfAbsent(key, () => MatrixRoom(roomId: key, store: store));
+            join.putIfAbsent(key, () => MatrixRoom(roomId: key, store: store, start: value.timeline.prevBatch));
         value.state.forEach((e) => room.handleEvent(e));
         value.timeline.events.forEach((e) => room.handleEvent(e));
       });
